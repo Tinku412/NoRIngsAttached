@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZ1K38EJKS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JZ1K38EJKS');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | No Rings Attached</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e4b902;    /* Golden yellow */
+            --secondary: #9a031e;  /* Deep red */
+            --dark: #333F50;
+            --light: #F9F9F9;
+            --gray: #6B7280;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--white);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Enhanced Header */
+        header {
+            padding: 15px 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Terms specific styles */
+        .terms-section {
+            padding: 120px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--light) 0%, #f0f7f7 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terms-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="2" fill="%23e4b902" fill-opacity="0.1"/></svg>') repeat;
+            opacity: 0.5;
+        }
+
+        .terms-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            text-align: left;
+        }
+
+        .terms-content h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            color: var(--dark);
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .terms-content h2 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--dark);
+        }
+
+        .terms-content p {
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .terms-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .terms-content li {
+            color: var(--gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        /* Enhanced Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .terms-content {
+                padding: 20px;
+            }
+            
+            .terms-content h1 {
+                font-size: 2rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>No Rings Attached<span> - D.I.N.K</span></h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Terms Section -->
+    <section class="terms-section">
+        <div class="container">
+            <div class="terms-content">
+                <h1>Terms of Service</h1>
+                
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing and using No Rings Attached, you agree to be bound by these Terms of Service and all applicable laws and regulations.</p>
+
+                <h2>2. User Eligibility</h2>
+                <p>You must be at least 18 years old to use our service. By using our platform, you represent and warrant that you are at least 18 years old.</p>
+
+                <h2>3. User Conduct</h2>
+                <p>Users agree to:</p>
+                <ul>
+                    <li>Provide accurate and complete information</li>
+                    <li>Maintain the security of their account</li>
+                    <li>Not engage in any fraudulent or harmful activities</li>
+                    <li>Respect other members' privacy and choices</li>
+                </ul>
+
+                <h2>4. Privacy and Data Protection</h2>
+                <p>We take your privacy seriously. Please refer to our Privacy Policy for details on how we collect, use, and protect your personal information.</p>
+
+                <h2>5. Content Guidelines</h2>
+                <p>Users are responsible for all content they post on the platform. Content must not be:</p>
+                <ul>
+                    <li>Offensive or discriminatory</li>
+                    <li>False or misleading</li>
+                    <li>In violation of any laws</li>
+                    <li>Infringing on others' rights</li>
+                </ul>
+
+                <h2>6. Termination</h2>
+                <p>We reserve the right to terminate or suspend accounts that violate these terms or engage in inappropriate behavior.</p>
+
+                <h2>7. Changes to Terms</h2>
+                <p>We may modify these terms at any time. Continued use of the platform constitutes acceptance of modified terms.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 No Rings Attached. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

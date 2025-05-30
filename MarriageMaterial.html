@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZ1K38EJKS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JZ1K38EJKS');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Rings Attached | For Progressive Indians Over 30</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #9a031e;    /* Golden yellow */
+            --secondary: #e4b902;  /* Deep red */
+            --dark: #333F50;       /* Keeping this for text */
+            --light: #F9F9F9;      /* Keeping this for backgrounds */
+            --gray: #6B7280;       /* Keeping this for secondary text */
+            --light-gray: #F1F1F1; /* Keeping this for hover states */
+            --white: #FFFFFF;      /* Keeping this for backgrounds */
+            --border: #E5E7EB;     /* Keeping this for borders */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.5;
+            background-color: var(--white);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .container {
+            width: 100%;
+            padding: 20px 0;
+            border-top: 2px solid var(--primary);
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 22px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .description {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 14px;
+            
+            padding-bottom: 15px;
+            text-align: center;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+        
+        .tab {
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            background-color: var(--white);
+        }
+
+        .tab-icon {
+            font-size: 12px;
+            margin-right: 2px;
+        }
+        
+        .main-content {
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .header-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px;
+            justify-content: center;
+        }
+        
+        .tasks-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 5px;
+        }
+        
+        .date {
+            font-size: 14px;
+        }
+        
+        .task-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-top: 1px solid var(--primary);
+        }
+        
+        .task {
+            display: flex;
+            align-items: center;
+        }
+        
+        .task-icon {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .task-text {
+            font-size: 14px;
+        }
+        
+        .progress-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .progress-btn {
+            padding: 3px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 12px;
+            background-color: var(--white);
+            cursor: pointer;
+        }
+        
+        .progress-btn:hover, .progress-btn.active {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+        
+        .save-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        
+        .stats-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-title {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .iframe-container {
+            width: 80%;
+            margin: 20px auto;
+            margin-bottom: 5px;
+        }
+        
+        /* Data table styling */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-primary {
+            background-color: rgba(228, 185, 2, 0.1);  /* Light version of primary */
+            color: var(--primary);
+        }
+
+        .check-icon {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .criteria-section {
+            margin-bottom: 30px;
+        }
+
+        .criteria-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .criteria-list {
+            list-style-type: none;
+        }
+
+        .criteria-list li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        .criteria-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #059669;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--gray);
+            padding: 10px 0;
+            border-top: 1px solid var(--border);
+        }
+        
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+        }
+
+        .how-it-works {
+            background: var(--light-gray);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px 20px 10px 20px;
+            margin: 0 auto 18px auto;
+            max-width: 700px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+            font-size: 14px;
+        }
+        .how-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+        .how-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .how-steps li {
+            display: flex;
+            align-items: center;
+            background: var(--white);
+            border-radius: 4px;
+            padding: 6px 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            font-size: 13px;
+            min-width: 180px;
+        }
+        .how-step-num {
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 6px;
+            font-size: 15px;
+        }
+        @media (max-width: 700px) {
+            .how-steps {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .how-it-works {
+                padding: 12px 8px 6px 8px;
+            }
+            .how-steps li {
+                min-width: 0;
+                width: 100%;
+            }
+        }
+
+        .how-it-works-minimal {
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            padding: 12px 18px 8px 18px;
+            margin: 0 auto 16px auto;
+            max-width: 500px;
+            background: var(--white);
+            font-size: 14px;
+        }
+        .how-title-minimal {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+        .how-steps-minimal {
+            list-style: decimal inside;
+            padding-left: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .how-steps-minimal li {
+            font-size: 14px;
+            margin-left: 0;
+            padding-left: 0;
+            color: var(--dark);
+        }
+
+        /* FAQ section */
+        .faq-section {
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            background: var(--white);
+            
+            margin: 24px auto 0 auto;
+            padding: 14px 18px 10px 18px;
+            font-size: 14px;
+        }
+        .faq-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        .faq-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .faq-q {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+        .faq-a {
+            color: var(--gray);
+            margin-left: 0;
+        }
+
+        /* Compact section spacing */
+        .container, .main-content, .criteria-section, .faq-section {
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .how-it-works-minimal, .faq-section {
+                padding: 10px 6px 6px 10px;
+                max-width: 100%;
+            }
+        }
+
+        .about-how-flex {
+            display: flex;
+            gap: 32px;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+        .about-col, .how-col {
+            flex: 1 1 0;
+            min-width: 0;
+            background: var(--white);
+            border-radius: 5px;
+            padding: 0 0 0 0;
+        }
+        .about-col h3, .how-col h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        .how-steps-minimal {
+            list-style: decimal inside;
+            padding-left: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .how-steps-minimal li {
+            font-size: 14px;
+            margin-left: 0;
+            padding-left: 0;
+            color: var(--dark);
+        }
+        @media (max-width: 800px) {
+            .about-how-flex {
+                flex-direction: column;
+                gap: 18px;
+            }
+            .about-col, .how-col {
+                padding: 0;
+            }
+        }
+
+        /* New header bar styling */
+        .header-bar {
+            background-color: var(--white);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 8px 16px;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            background-color: var(--white);
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- New header bar -->
+        <div class="header-bar">
+            <div class="nav-container">
+                <a href="#" class="nav-button">Home</a>
+                <a href="#how-it-works" class="nav-button">How It Works</a>
+                <a href="#faq" class="nav-button">FAQ</a>
+                <a href="#" class="nav-button">Sign Up</a>
+            </div>
+        </div>
+
+        <div class="logo">
+            
+            <h1>WELCOME TO <span style="color: var(--secondary);">MARRIAGE </span> <span style="color: var(--primary);">MATERIAL</span></h1>
+        </div>
+        
+        <p class="description">
+            You're in your 30s, highly independent, you've built your life, and are now ready to settle down. 
+            <br>You don't want to waste time dealing with immature, non-serious people & their families<br>
+            Then just skip the circus and join our matchmaking community made for you.
+        </p>
+
+       
+        
+        <div class="iframe-container">
+            <iframe src="https://embeds.beehiiv.com/1806ed0f-1a2e-471d-a6ca-84f135010b5d?slim=true" data-test-id="beehiiv-embed" height="52" frameborder="0" scrolling="no" style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 100%;"></iframe>
+        </div>
+        <div class="header-row">
+            <span class="tasks-title">📋 THIS IS WHERE REAL WOMEN FIND REAL MEN. <span style="color: var(--primary);">Sign up to find yours.</span></span>
+        </div>
+
+        <div class="main-content">
+           
+            
+            <!-- <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>For Men</th>
+                        <th>For Women</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Independence</td>
+                        <td><span class="check-icon">✓</span> Independent, not a momma's boy</td>
+                        <td><span class="check-icon">✓</span> Independent, not a confused dad's little princess</td>
+                    </tr>
+                    <tr>
+                        <td>Expectations</td>
+                        <td><span class="check-icon">✓</span> Looking for a partner, not a maid</td>
+                        <td><span class="check-icon">✓</span> Reasonable financial expectations from partner</td>
+                    </tr>
+                    <tr>
+                        <td>Maturity</td>
+                        <td><span class="check-icon">✓</span> Looking for a wife, not a super model</td>
+                        <td><span class="check-icon">✓</span> Looking for a husband, not a fitness model</td>
+                    </tr>
+                    <tr>
+                        <td>Past</td>
+                        <td><span class="check-icon">✓</span> Clear boundaries with exes & girl besties</td>
+                        <td><span class="check-icon">✓</span> Clear boundaries with exes & guy besties</td>
+                    </tr>
+                    <tr>
+                        <td>Realism</td>
+                        <td><span class="badge badge-primary"> Realize nobody is perfect</span></td>
+                        <td><span class="badge badge-primary"> Realize nobody is perfect</span></td>
+                    </tr>
+                    <tr>
+                        <td>Values</td>
+                        <td><span class="badge badge-primary"> No caste discrimination</span></td>
+                        <td><span class="badge badge-primary"> No caste discrimination</span></td>
+                    </tr>
+                    <tr>
+                        <td>Family</td>
+                        <td><span class="badge badge-primary"> Can convince family on your choice</span></td>
+                        <td><span class="badge badge-primary"> Can convince family on your choice</span></td>
+                    </tr>
+                </tbody>
+            </table> -->
+            
+            <div class="about-how-flex">
+                <div class="about-col">
+                    <h3>Who/What/Why?</h3>
+                    <ul class="criteria-list">
+                        <li>A community of Singles, for Singles, by a Single</li>
+                        <li>For educated, urban, working professionals</li>
+                        <li>With an independent & progressive mindset </li>
+                        <li>To find a life partner</li>
+                    </ul>
+                </div>
+                <div class="how-col">
+                    <h3>How does it work?</h3>
+                    <ul class="criteria-list">
+                        <li>Sign up for free (only if you agree with above criteria)</li>
+                        <li>We will reach out to you for details/verification</li>
+                        <li>You'll get access to profiles (limited details)</li>
+                        <li>Complete payment to view contact details</li>
+                    </ul>
+                </div>
+            </div>
+                       
+        </div>
+        
+        <div class="faq-section">
+            <div class="faq-title">FAQ</div>
+            <ul class="faq-list">
+                <li><div class="faq-q">Who is this for?</div><div class="faq-a">Millennials who are serious about finding a life partner.</div></li>
+                <li><div class="faq-q">Is it free to join?</div><div class="faq-a">Yes, you can sign up and view profiles for free.</div></li>
+                <li><div class="faq-q">How are profiles verified?</div><div class="faq-a">I will reach out to you via email and collect details</div></li>
+                <li><div class="faq-q">How do I get full access?</div><div class="faq-a">After verification, you can complete payment to contact profiles directly.</div></li>
+                <li><div class="faq-q">Is this a dating site?</div><div class="faq-a">No, this is a matchmaking community for those seeking genuine, long-term relationships.</div></li>
+                <li><div class="faq-q">What is the price?</div><div class="faq-a">Free for first 100 members. A one-time payment of ₹1,999 for lifetime access for next 100 members.</div></li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Marriage Material. All rights reserved.</p><p>Created by: A hopeless romantic</p>
+        </div>
+    </div>
+</body>
+</html>

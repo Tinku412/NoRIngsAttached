@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookmarks | No Rings Attached</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e4b902;    /* Golden yellow */
+            --secondary: #9a031e;  /* Deep red */
+            --dark: #333F50;
+            --light: #F9F9F9;
+            --gray: #6B7280;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        header {
+            padding: 15px 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Bookmarks Section */
+        .bookmarks-section {
+            padding: 60px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+        }
+
+        .profile-info {
+            padding: 15px;
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .profile-details {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .profile-tagline {
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .no-bookmarks {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-bookmarks h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .no-bookmarks p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .profiles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .profile-card {
+            position: relative;
+        }
+
+        .remove-bookmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--white);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .remove-bookmark:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .remove-bookmark i {
+            font-size: 1rem;
+        }
+
+        /* Add these styles for the popup message */
+        .popup-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: none;
+        }
+
+        .popup-message.success {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .popup-message.error {
+            background-color: #EF4444;
+            color: white;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>No Rings Attached<span> - D.I.N.K</span></h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="profiles.html">Profiles</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Bookmarks Section -->
+    <section class="bookmarks-section">
+        <div class="container">
+            <div class="section-header">
+                <h1>My Bookmarks</h1>
+                <p>View and manage your bookmarked profiles</p>
+            </div>
+
+            <div class="profiles-grid">
+                <!-- Bookmarked profiles will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NRA-DINK. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Supabase and Auth scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+
+    <script>
+        // Check authentication and load bookmarks
+        document.addEventListener('DOMContentLoaded', async () => {
+            const isAuthenticated = await checkAuth()
+            if (!isAuthenticated) return
+
+            // Add sign out button to header
+            const navLinks = document.querySelector('.nav-links')
+            const signOutLi = document.createElement('li')
+            signOutLi.innerHTML = '<a href="#" onclick="signOut()">Sign Out</a>'
+            navLinks.appendChild(signOutLi)
+
+            await loadBookmarks()
+        })
+
+        async function loadBookmarks() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) {
+                    window.location.href = 'index.html'
+                    return
+                }
+
+                const { data: bookmarks, error } = await supabase
+                    .from('bookmarks')
+                    .select(`
+                        id,
+                        profile_id,
+                        profiles:profile_id (
+                            id,
+                            name,
+                            age,
+                            gender,
+                            city,
+                            image_url,
+                            tagline
+                        )
+                    `)
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false })
+
+                if (error) throw error
+
+                const profilesGrid = document.querySelector('.profiles-grid')
+                profilesGrid.innerHTML = ''
+
+                if (!bookmarks || bookmarks.length === 0) {
+                    profilesGrid.innerHTML = `
+                        <div class="no-bookmarks">
+                            <h2>No Bookmarks Yet</h2>
+                            <p>Start exploring profiles and bookmark the ones you like!</p>
+                            <a href="profiles.html" class="btn">Browse Profiles</a>
+                        </div>
+                    `
+                    return
+                }
+
+                bookmarks.forEach(bookmark => {
+                    const profile = bookmark.profiles
+                    const profileCard = `
+                        <div class="profile-card">
+                            <button class="remove-bookmark" onclick="removeBookmark('${bookmark.id}', event)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <a style="text-decoration: none;" href="profile-details.html?id=${profile.id}">
+                                <img src="${profile.image_url || 'https://via.placeholder.com/300'}" alt="Profile" class="profile-image">
+                                <div class="profile-info">
+                                    <h3 class="profile-name">${profile.name}, ${profile.age}</h3>
+                                    <p class="profile-details">${profile.city || 'Location not specified'}</p>
+                                    <p class="profile-tagline">${profile.tagline || 'No description available'}</p>
+                                </div>
+                            </a>
+                        </div>
+                    `
+                    profilesGrid.innerHTML += profileCard
+                })
+
+            } catch (error) {
+                console.error('Error:', error)
+                const profilesGrid = document.querySelector('.profiles-grid')
+                profilesGrid.innerHTML = `
+                    <div class="no-bookmarks">
+                        <h2>Error Loading Bookmarks</h2>
+                        <p>Please try again later.</p>
+                    </div>
+                `
+            }
+        }
+
+        // Add this new function to handle bookmark removal
+        async function removeBookmark(bookmarkId, event) {
+            event.preventDefault() // Prevent the link from being clicked
+            event.stopPropagation() // Prevent event bubbling
+
+            try {
+                const { error } = await supabase
+                    .from('bookmarks')
+                    .delete()
+                    .eq('id', bookmarkId)
+
+                if (error) throw error
+
+                // Remove the profile card from the DOM
+                const profileCard = event.target.closest('.profile-card')
+                profileCard.remove()
+
+                // Check if there are any bookmarks left
+                const remainingCards = document.querySelectorAll('.profile-card')
+                if (remainingCards.length === 0) {
+                    const profilesGrid = document.querySelector('.profiles-grid')
+                    profilesGrid.innerHTML = `
+                        <div class="no-bookmarks">
+                            <h2>No Bookmarks Yet</h2>
+                            <p>Start exploring profiles and bookmark the ones you like!</p>
+                            <a href="profiles.html" class="btn">Browse Profiles</a>
+                        </div>
+                    `
+                }
+
+                // Show success message
+                showPopupMessage('Profile removed from bookmarks', 'success')
+            } catch (error) {
+                console.error('Error:', error)
+                showPopupMessage('Failed to remove bookmark', 'error')
+            }
+        }
+
+        // Add this function to show popup messages
+        function showPopupMessage(message, type) {
+            // Create overlay if it doesn't exist
+            let overlay = document.getElementById('overlay')
+            if (!overlay) {
+                overlay = document.createElement('div')
+                overlay.id = 'overlay'
+                overlay.className = 'overlay'
+                document.body.appendChild(overlay)
+            }
+
+            // Create message element if it doesn't exist
+            let messageElement = document.getElementById('popupMessage')
+            if (!messageElement) {
+                messageElement = document.createElement('div')
+                messageElement.id = 'popupMessage'
+                messageElement.className = 'popup-message'
+                document.body.appendChild(messageElement)
+            }
+
+            // Update message and show
+            messageElement.textContent = message
+            messageElement.className = `popup-message ${type}`
+            overlay.style.display = 'block'
+            messageElement.style.display = 'block'
+
+            // Hide after 3 seconds
+            setTimeout(() => {
+                overlay.style.display = 'none'
+                messageElement.style.display = 'none'
+            }, 3000)
+        }
+    </script>
+</body>
+</html> 

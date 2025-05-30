@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZ1K38EJKS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JZ1K38EJKS');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Rings Attached | Matchmaking for Child-Free Couples</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e4b902;    /* Golden yellow */
+            --secondary: #9a031e;  /* Deep red */
+            --dark: #333F50;
+            --light: #F9F9F9;
+            --gray: #6B7280;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--white);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Enhanced Header */
+        header {
+            padding: 15px 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background-color: var(--primary);
+            color: var(--white);
+            border: 2px solid var(--primary);
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(228, 185, 2, 0.2);
+        }
+
+        /* Enhanced Hero Section */
+        .hero {
+            padding: 120px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--light) 0%, #f0f7f7 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="2" fill="%23e4b902" fill-opacity="0.1"/></svg>') repeat;
+            opacity: 0.5;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            color: var(--dark);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: var(--gray);
+           
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hero-signup {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-signup:hover {
+            transform: translateY(-5px);
+        }
+
+        .hero-signup h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(228, 185, 2, 0.1);
+        }
+
+        /* Enhanced How It Works Section */
+        .how-it-works {
+            padding: 100px 0;
+            background-color: var(--white);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+            padding: 35px 25px;
+            background: var(--light);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .step:hover::before {
+            opacity: 1;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(228, 185, 2, 0.2);
+        }
+
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .step p {
+            color: var(--gray);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* FAQ Section Styles */
+        .faq {
+            padding: 100px 0;
+            background-color: var(--light);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .faq-item p {
+            color: var(--gray);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 20px;
+        }
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .steps {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .step {
+                padding: 25px 20px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .faq-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .faq-item {
+                padding: 20px;
+            }
+        }
+         /* Add a create profile button */
+         .create-profile-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background-color: var(--primary);
+            color: var(--white);
+            border: 2px solid var(--primary);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .create-profile-btn:hover {
+            background-color: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(228, 185, 2, 0.2);
+        }
+         /* Add a create profile button */
+         .view-profile-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .view-profile-btn:hover {
+            background-color: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(228, 185, 2, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>No Rings Attached<span> - D.I.N.K</span></h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#hero">Join Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <h1>Find Your <span style="color: var(--primary);">Childfree</span> Partner</h1>
+            <p>Join India's first matchmaking platform exclusively for DINK enthusiasts. <br>Connect with like-minded individuals who share your vision of a life without children.</p>
+            
+            <div class="hero-signup" style="width: 600px;">
+                <h3 style="margin-bottom: 20px;">Get Started Now</h3>
+                <!-- <iframe src="https://embeds.beehiiv.com/1806ed0f-1a2e-471d-a6ca-84f135010b5d?slim=true" data-test-id="beehiiv-embed" height="52" frameborder="0" scrolling="no" style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 500px;"></iframe> -->
+                <a href="create-profile.html" class="create-profile-btn">Create Profile</a>
+                <a href="profiles.html" class="view-profile-btn">View Profiles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>Login with your email to access our exclusive DINK community.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Create Profile</h3>
+                    <p>Create a profile with your lifestyle preferences, career goals, and why you've chosen the DINK lifestyle.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Verification</h3>
+                    <p>We follow an ongoing verification process continuously evaluating the quality of the profiles.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Access Database</h3>
+                    <p>Get access to our curated database of verified profiles, all committed to the child-free lifestyle.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>Start Matching</h3>
+                    <p>Begin connecting with potential partners who share your vision of a DINK future.</p>
+            </div>
+        </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#hero" class="btn" style="max-width: 300px; margin: 0 auto;">Sign Up</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>What does DINK mean?</h3>
+                    <p>DINK stands for "Dual Income, No Kids." It refers to couples who have chosen to live without children, focusing on their careers, personal growth, and shared experiences.</p>
+                    </div>
+                <div class="faq-item">
+                    <h3>Is this platform only for couples?</h3>
+                    <p>No, our platform is open to both singles and couples who are committed to the DINK lifestyle. We help connect like-minded individuals who share this vision.</p>
+                    </div>
+                <div class="faq-item">
+                    <h3>What are the benefits of the DINK lifestyle?</h3>
+                    <p>DINK couples often enjoy greater financial freedom, career flexibility, travel opportunities, and more time for personal growth and relationship development.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How do you handle societal pressure about not having children?</h3>
+                    <p>Our community provides a supportive environment where members can connect with others who understand and respect their choice to live child-free.</p>
+                    </div>
+                <div class="faq-item">
+                    <h3>What kind of people join this platform?</h3>
+                    <p>Our members are diverse professionals who value personal freedom, career growth, and meaningful relationships. They're typically ambitious, independent, and clear about their life choices.</p>
+                    </div>
+                <div class="faq-item">
+                    <h3>How do you ensure a safe environment?</h3>
+                    <p>We strive to maintain a respectful community where everyone's choices are valued. We also depend on our community to report any inappropriate behavior.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What if my family doesn't support my DINK choice?</h3>
+                    <p>Many of our members have faced similar challenges. Our community provides support and resources to help navigate these conversations with family and friends.</p>
+                    </div>
+                <div class="faq-item">
+                    <h3>Are there any age restrictions?</h3>
+                    <p>Our platform is open to adults of all ages who are committed to the DINK lifestyle. We have members from various age groups and life stages.</p>
+                    </div>
+                <div class="faq-item">
+                    <h3>How do you handle different cultural perspectives?</h3>
+                    <p>We celebrate diversity and understand that the DINK lifestyle can be viewed differently across cultures. Our platform encourages respectful dialogue and understanding.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What makes this platform different from regular dating sites?</h3>
+                    <p>Unlike general dating platforms, we focus specifically on connecting people who are committed to the DINK lifestyle, ensuring better compatibility from the start.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is there a fee to use the platform?</h3>
+                    <p>No, our platform is completely free to use!</p>
+                    </div>
+                </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#hero" class="btn" style="max-width: 300px; margin: 0 auto;">Get Started Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NRA-DINK. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
