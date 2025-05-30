@@ -7,7 +7,7 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 async function checkAuth() {
     const { data: { session }, error } = await supabase.auth.getSession()
     if (!session) {
-        window.location.href = '/login.html'
+        window.location.href = 'login.html'
         return false
     }
     return true
@@ -33,7 +33,7 @@ async function signOut() {
     try {
         const { error } = await supabase.auth.signOut()
         if (error) throw error
-        window.location.href = '/login.html'
+        window.location.href = 'login.html'
     } catch (error) {
         console.error('Error signing out:', error.message)
     }
