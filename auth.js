@@ -7,7 +7,7 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 async function checkAuth() {
     const { data: { session }, error } = await supabase.auth.getSession()
     if (!session) {
-        window.location.href = window.location.origin +  '/login.html'
+        window.location.href = '/login.html'
         return false
     }
     return true
