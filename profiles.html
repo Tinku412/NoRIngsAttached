@@ -16,6 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --primary: #e4b902;    /* Golden yellow */
@@ -460,6 +461,50 @@
 
         /* Add Font Awesome for icons */
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+        /* Add these mobile menu styles */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 5px;
+            margin-left: auto;
+            z-index: 1001;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            nav {
+                position: relative;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                border-top: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+        }
     </style>
 </head>
 <body>
@@ -470,6 +515,9 @@
                 <div class="logo">
                     <a style="text-decoration: none; color: var(--dark); " href="index.html"><h1>No Rings Attached<span> - D.I.N.K</span></h1></a>
                 </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
                     <!-- <li><a href="index.html#how-it-works">How It Works</a></li>
@@ -666,6 +714,42 @@
             document.getElementById('ageFilter').addEventListener('change', fetchProfiles)
             document.getElementById('genderFilter').addEventListener('change', fetchProfiles)
             document.getElementById('locationFilter').addEventListener('change', fetchProfiles)
+
+            // Add mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn')
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active')
+                // Toggle between hamburger and close icon
+                const icon = mobileMenuBtn.querySelector('i')
+                if (icon.classList.contains('fa-bars')) {
+                    icon.classList.remove('fa-bars')
+                    icon.classList.add('fa-times')
+                } else {
+                    icon.classList.remove('fa-times')
+                    icon.classList.add('fa-bars')
+                }
+            })
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('nav')) {
+                    navLinks.classList.remove('active')
+                    const icon = mobileMenuBtn.querySelector('i')
+                    icon.classList.remove('fa-times')
+                    icon.classList.add('fa-bars')
+                }
+            })
+
+            // Close mobile menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active')
+                    const icon = mobileMenuBtn.querySelector('i')
+                    icon.classList.remove('fa-times')
+                    icon.classList.add('fa-bars')
+                })
+            })
         })
 
         // Add these functions to your existing script
