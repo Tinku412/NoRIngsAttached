@@ -321,6 +321,19 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            .container {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+            .hero-signup {
+                width: 100% !important;
+                min-width: 0;
+                box-sizing: border-box;
+                padding: 20px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
         }
 
         /* Add to your existing styles */
@@ -437,21 +450,19 @@
             color: var(--dark);
             cursor: pointer;
             padding: 5px;
-            margin-left: auto; /* Push the button to the right */
-            z-index: 1001; /* Ensure it's above other elements */
+            margin-left: auto;
+            z-index: 1001;
         }
 
         @media (max-width: 768px) {
             .mobile-menu-btn {
-                display: flex; /* Change to flex for better alignment */
+                display: flex;
                 align-items: center;
                 justify-content: center;
             }
-
             nav {
-                position: relative; /* Add this to contain the absolute positioned menu */
+                position: relative;
             }
-
             .nav-links {
                 display: none;
                 position: absolute;
@@ -464,40 +475,32 @@
                 gap: 15px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 z-index: 1000;
-                border-top: 1px solid var(--border); /* Add a border to separate from header */
+                border-top: 1px solid var(--border);
             }
-
             .nav-links.active {
                 display: flex;
             }
-
             .profile-container {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-
             .profile-image-section {
                 height: 300px;
             }
-
             .profile-image {
                 height: 100%;
                 object-fit: cover;
             }
-
             .profile-info-section {
                 padding: 20px;
             }
-
             .profile-name {
                 font-size: 2rem;
             }
-
             .top-actions {
                 flex-wrap: wrap;
                 gap: 10px;
             }
-
             .top-action-btn {
                 flex: 1;
                 min-width: 120px;
@@ -505,35 +508,28 @@
                 padding: 8px 15px;
                 font-size: 0.9rem;
             }
-
             .profile-section {
                 padding: 15px;
             }
-
             .profile-section h3 {
                 font-size: 1.2rem;
             }
-
             .profile-section p {
                 font-size: 1rem;
             }
-
             .social-links {
                 flex-wrap: wrap;
                 gap: 10px;
             }
-
             .social-link {
                 flex: 1;
                 min-width: 120px;
                 text-align: center;
             }
-
             .action-buttons {
                 flex-direction: column;
                 gap: 10px;
             }
-
             .btn {
                 width: 100%;
                 text-align: center;
@@ -547,16 +543,18 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <a style="text-decoration: none; color: var(--dark); " href="index.html"><h1>No Rings Attached<span> - D.I.N.K</span></h1></a>
+                    <a style="text-decoration: none; color: var(--dark);" href="index.html">
+                        <h1>No Rings Attached<span> - D.I.N.K</span></h1>
+                    </a>
                 </div>
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <i class="fas fa-bars"></i>
                 </button>
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>   
-                    <li><a href="profiles.html">Profiles</a></li>    
-                    <li><a href="bookmarks.html">Bookmarks</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#hero">Join Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
                 </ul>
             </nav>
         </div>
