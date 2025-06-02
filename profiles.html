@@ -86,7 +86,7 @@
             font-weight: 500;
             font-size: 1.1rem;
             transition: all 0.3s ease;
-            padding: 8px 0;
+            padding: 0px 0;
             position: relative;
         }
 
@@ -505,6 +505,43 @@
                 display: flex;
             }
         }
+
+        /* Add to your nav styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--white);
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1002;
+            right: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .dropdown-content a {
+            color: var(--dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .dropdown-content a:hover {
+            background-color: var(--light);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -524,6 +561,13 @@
                     <li><a href="index.html#faq">FAQ</a></li> -->
                     <li><a href="bookmarks.html">Bookmarks</a></li>
                     <li><a href="contact.html">Contact Us</a></li>
+                    <li class="dropdown" id="myAccountDropdown">
+                        <a href="#" class="dropbtn">My Account <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#" id="viewMyProfileBtn">View My Profile</a>
+                            <a href="#" id="editMyProfileBtn">Edit My Profile</a>
+                        </div>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -537,7 +581,10 @@
                 <p>Browse through our community of like-minded individuals who share your vision of a DINK lifestyle</p>
             </div>
 
-            <a href="create-profile.html" class="create-profile-btn">Create Your Profile</a>
+            <div id="profileButtons">
+                <a href="create-profile.html" class="create-profile-btn" style="display: none;">Create Your Profile</a>
+                <a href="#" class="create-profile-btn" id="editProfileBtn" style="display: none;">Edit Your Profile</a>
+            </div>
 
             <div class="filters">
                 <div class="filter-group">
@@ -617,6 +664,36 @@
                 })
             } catch (error) {
                 console.error('Error fetching cities:', error)
+            }
+        }
+
+        // Function to check user's profile status and update buttons
+        async function updateProfileButtons() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('id')
+                        .eq('user_id', user.id)
+                        .single();
+
+                    const createProfileBtn = document.querySelector('.create-profile-btn');
+                    const editProfileBtn = document.getElementById('editProfileBtn');
+
+                    if (profile && profile.id) {
+                        // User has a profile, show edit button
+                        createProfileBtn.style.display = 'none';
+                        editProfileBtn.style.display = 'inline-block';
+                        editProfileBtn.href = `edit-profile.html?id=${profile.id}`;
+                    } else {
+                        // User doesn't have a profile, show create button
+                        createProfileBtn.style.display = 'inline-block';
+                        editProfileBtn.style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking profile status:', error);
             }
         }
 
@@ -710,6 +787,7 @@
             // Initialize the page
             await fetchProfiles()
             await getUniqueCities()
+            await updateProfileButtons()
             
             // Add event listeners to filters
             document.getElementById('ageFilter').addEventListener('change', fetchProfiles)
@@ -751,6 +829,41 @@
                     icon.classList.add('fa-bars')
                 })
             })
+
+            // Add event listeners for My Account dropdown
+            document.getElementById('viewMyProfileBtn').addEventListener('click', async (e) => {
+                e.preventDefault();
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+                // Fetch the user's profile
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .single();
+                if (profile && profile.id) {
+                    window.open(`profile-details.html?id=${profile.id}`, '_blank');
+                } else {
+                    alert('No profile found for your account.');
+                }
+            });
+
+            document.getElementById('editMyProfileBtn').addEventListener('click', async (e) => {
+                e.preventDefault();
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+                // Fetch the user's profile
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .single();
+                if (profile && profile.id) {
+                    window.open(`edit-profile.html?id=${profile.id}`, '_blank');
+                } else {
+                    alert('No profile found for your account.');
+                }
+            });
         })
 
         // Add these functions to your existing script
@@ -843,6 +956,46 @@
                 console.error('Error checking bookmark status:', error)
             }
         }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const profileId = new URLSearchParams(window.location.search).get('id');
+            if (!profileId) return;
+
+            // Fetch profile data
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', profileId)
+                .single();
+
+            if (profile) {
+                // Pre-fill form fields
+                document.getElementById('name').value = profile.name || '';
+                document.getElementById('age').value = profile.age || '';
+                // ...repeat for all fields...
+            }
+
+            // On submit, update the profile
+            document.getElementById('profileForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                // Gather updated data
+                const updatedProfile = {
+                    name: document.getElementById('name').value,
+                    age: document.getElementById('age').value,
+                    // ...other fields...
+                };
+                const { error } = await supabase
+                    .from('profiles')
+                    .update(updatedProfile)
+                    .eq('id', profileId);
+                if (!error) {
+                    alert('Profile updated!');
+                    window.location.href = `profile-details.html?id=${profileId}`;
+                } else {
+                    alert('Failed to update profile.');
+                }
+            });
+        });
     </script>
 </body>
 </html> 

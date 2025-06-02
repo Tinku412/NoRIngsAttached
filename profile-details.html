@@ -87,7 +87,7 @@
             font-weight: 500;
             font-size: 1.1rem;
             transition: all 0.3s ease;
-            padding: 8px 0;
+            padding: 0px 0;
             position: relative;
         }
 
@@ -123,12 +123,80 @@
 
         .profile-image-section {
             position: relative;
+            margin-bottom: 30px;
+        }
+
+        .main-image {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .profile-image {
             width: 100%;
-            
+            height: auto;
+            display: block;
+        }
+
+        .additional-images {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .additional-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .additional-image:hover {
+            transform: scale(1.05);
+        }
+
+        .additional-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90vh;
             object-fit: contain;
+        }
+
+        .image-modal .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
         }
 
         .profile-info-section {
@@ -535,6 +603,43 @@
                 text-align: center;
             }
         }
+
+         /* Add to your nav styles */
+         .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--white);
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1002;
+            right: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .dropdown-content a {
+            color: var(--dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .dropdown-content a:hover {
+            background-color: var(--light);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -552,9 +657,16 @@
                 </button>
                 <ul class="nav-links">
                     <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#hero">Join Us</a></li>
+                    <!-- <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#hero">Join Us</a></li> -->
                     <li><a href="about.html">About Us</a></li>
+                    <li class="dropdown" id="myAccountDropdown">
+                        <a href="#" class="dropbtn">My Account <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#" id="viewMyProfileBtn">View My Profile</a>
+                            <a href="#" id="editMyProfileBtn">Edit My Profile</a>
+                        </div>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -565,7 +677,10 @@
         <div class="container">
             <div class="profile-container">
                 <div class="profile-image-section">
-                    <img id="profileImage" src="https://via.placeholder.com/400" alt="Profile" class="profile-image">
+                    <div class="main-image">
+                        <img id="profileImage" src="https://via.placeholder.com/400" alt="Profile" class="profile-image">
+                    </div>
+                    <div id="additionalImages" class="additional-images"></div>
                 </div>
                 <div class="profile-info-section">
                     <div class="profile-header">
@@ -585,6 +700,73 @@
                                 <i class="fas fa-arrow-left"></i> Back to Profiles
                             </a>
                         </div>
+
+                        <!-- Edit Profile Button (hidden by default) -->
+                        <button id="editProfileBtn" class="top-action-btn" style="display:none; margin-bottom:20px;">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+
+                        <!-- Edit Profile Form (hidden by default) -->
+                        <form id="editProfileForm" style="display:none; margin-bottom:20px;">
+                            <div>
+                                <label>Name</label>
+                                <input type="text" id="editName" required>
+                            </div>
+                            <div>
+                                <label>Age</label>
+                                <input type="number" id="editAge" required>
+                            </div>
+                            <div>
+                                <label>Gender</label>
+                                <input type="text" id="editGender">
+                            </div>
+                            <div>
+                                <label>Looking For</label>
+                                <input type="text" id="editLookingFor">
+                            </div>
+                            <div>
+                                <label>City</label>
+                                <input type="text" id="editCity">
+                            </div>
+                            <div>
+                                <label>Email</label>
+                                <input type="email" id="editEmail">
+                            </div>
+                            <div>
+                                <label>Phone</label>
+                                <input type="text" id="editPhone">
+                            </div>
+                            <div>
+                                <label>Tagline</label>
+                                <input type="text" id="editTagline">
+                            </div>
+                            <div>
+                                <label>About</label>
+                                <textarea id="editAbout"></textarea>
+                            </div>
+                            <div>
+                                <label>Preferences</label>
+                                <textarea id="editPreferences"></textarea>
+                            </div>
+                            <div>
+                                <label>LinkedIn</label>
+                                <input type="url" id="editLinkedin">
+                            </div>
+                            <div>
+                                <label>Instagram</label>
+                                <input type="url" id="editInstagram">
+                            </div>
+                            <div>
+                                <label>Reddit</label>
+                                <input type="url" id="editReddit">
+                            </div>
+                            <div>
+                                <label>Twitter</label>
+                                <input type="url" id="editTwitter">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
+                        </form>
                     </div>
 
                     <div class="profile-section">
@@ -683,7 +865,7 @@
                     return
                 }
 
-                // Set image
+                // Set main image
                 document.getElementById('profileImage').src = profile.image_url || 'https://via.placeholder.com/400'
 
                 // Set name and tagline
@@ -754,6 +936,93 @@
                 
                 // Check if profile is bookmarked
                 await checkBookmarkStatus(profileId)
+
+                // Helper to fill the edit form
+                function fillEditForm(profile) {
+                    document.getElementById('editName').value = profile.name || '';
+                    document.getElementById('editAge').value = profile.age || '';
+                    document.getElementById('editGender').value = profile.gender || '';
+                    document.getElementById('editLookingFor').value = profile.looking_for || '';
+                    document.getElementById('editCity').value = profile.city || '';
+                    document.getElementById('editEmail').value = profile.email || '';
+                    document.getElementById('editPhone').value = profile.phone || '';
+                    document.getElementById('editTagline').value = profile.tagline || '';
+                    document.getElementById('editAbout').value = profile.about || '';
+                    document.getElementById('editPreferences').value = profile.preferences || '';
+                    document.getElementById('editLinkedin').value = profile.social_links?.linkedin || '';
+                    document.getElementById('editInstagram').value = profile.social_links?.instagram || '';
+                    document.getElementById('editReddit').value = profile.social_links?.reddit || '';
+                    document.getElementById('editTwitter').value = profile.social_links?.twitter || '';
+                }
+
+                // Add event listeners for My Account dropdown
+                document.getElementById('viewMyProfileBtn').addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (!user) return;
+                    // Fetch the user's profile
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('id')
+                        .eq('user_id', user.id)
+                        .single();
+                    if (profile && profile.id) {
+                        window.open(`profile-details.html?id=${profile.id}`, '_blank');
+                    } else {
+                        alert('No profile found for your account.');
+                    }
+                });
+
+                document.getElementById('editMyProfileBtn').addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (!user) return;
+                    // Fetch the user's profile
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('id')
+                        .eq('user_id', user.id)
+                        .single();
+                    if (profile && profile.id) {
+                        window.open(`edit-profile.html?id=${profile.id}`, '_blank');
+                    } else {
+                        alert('No profile found for your account.');
+                    }
+                });
+
+                // Handle form submission
+                document.getElementById('editProfileForm').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const profileId = new URLSearchParams(window.location.search).get('id');
+                    const updatedProfile = {
+                        name: document.getElementById('editName').value,
+                        age: document.getElementById('editAge').value,
+                        gender: document.getElementById('editGender').value,
+                        looking_for: document.getElementById('editLookingFor').value,
+                        city: document.getElementById('editCity').value,
+                        email: document.getElementById('editEmail').value,
+                        phone: document.getElementById('editPhone').value,
+                        tagline: document.getElementById('editTagline').value,
+                        about: document.getElementById('editAbout').value,
+                        preferences: document.getElementById('editPreferences').value,
+                        social_links: {
+                            linkedin: document.getElementById('editLinkedin').value,
+                            instagram: document.getElementById('editInstagram').value,
+                            reddit: document.getElementById('editReddit').value,
+                            twitter: document.getElementById('editTwitter').value
+                        }
+                    };
+                    const { error } = await supabase
+                        .from('profiles')
+                        .update(updatedProfile)
+                        .eq('id', profileId);
+                    if (!error) {
+                        alert('Profile updated!');
+                        location.reload();
+                    } else {
+                        alert('Failed to update profile.');
+                    }
+                });
             }
 
             // Render the profile
@@ -918,6 +1187,54 @@
                 overlay.style.display = 'none'
                 messageElement.style.display = 'none'
             }, 3000)
+        }
+
+        // Add this after your existing script
+        async function loadProfileImages(profileId) {
+            const { data: images, error } = await supabase
+                .from('profile_images')
+                .select('*')
+                .eq('profile_id', profileId)
+                .order('display_order');
+
+            if (error) {
+                console.error('Error loading images:', error);
+                return;
+            }
+
+            const additionalImagesContainer = document.getElementById('additionalImages');
+            additionalImagesContainer.innerHTML = '';
+
+            images.forEach(image => {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'additional-image';
+                imgContainer.innerHTML = `<img src="${image.image_url}" alt="Additional Profile Image">`;
+                additionalImagesContainer.appendChild(imgContainer);
+            });
+
+            // Add click handlers for image preview
+            document.querySelectorAll('.additional-image').forEach(img => {
+                img.addEventListener('click', function() {
+                    const modal = document.createElement('div');
+                    modal.className = 'image-modal';
+                    modal.innerHTML = `
+                        <button class="close-modal">&times;</button>
+                        <img src="${this.querySelector('img').src}" alt="Full size image">
+                    `;
+                    document.body.appendChild(modal);
+                    modal.style.display = 'flex';
+
+                    modal.querySelector('.close-modal').addEventListener('click', function() {
+                        modal.remove();
+                    });
+
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            modal.remove();
+                        }
+                    });
+                });
+            });
         }
     </script>
 </body>

@@ -18,7 +18,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
     <style>
         :root {
             --primary: #e4b902;    /* Golden yellow */
@@ -510,11 +509,11 @@
     <section class="create-profile-section">
         <div class="container">
             <div class="profile-form">
-                <h1>Create Your Profile</h1>
+                <h1>Edit Your Profile</h1>
                 
                 <div class="overlay" id="overlay" style="display: none;"></div>
                 <div class="popup-message success" id="successMessage" style="display: none;">
-                    Profile created successfully!
+                    Profile updated successfully!
                 </div>
                 <div class="popup-message error" id="errorMessage" style="display: none;">
                     An error occurred. Please try again.
@@ -568,9 +567,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="profileImages">Profile Images <span class="required">*</span></label>
-                        <input type="file" id="profileImages" class="form-control" required accept="image/*" multiple>
-                        <small class="form-text">Upload up to 4 photos of yourself (first image will be your main profile picture)</small>
+                        <label for="profileImages">Profile Image</label>
+                        <input type="file" id="profileImages" class="form-control" accept="image/*">
+                        <small class="form-text">Upload your profile picture</small>
                         <div id="imagePreview" class="image-preview-container"></div>
                     </div>
 
@@ -611,7 +610,7 @@
                         <div class="field-error" id="socialLinksError" style="display: none;"></div>
                     </div>
 
-                    <button type="submit" class="btn-submit">Create Profile</button>
+                    <button type="submit" class="btn-submit">Save Changes</button>
                 </form>
             </div>
         </div>
@@ -632,16 +631,20 @@
         </div>
     </footer>
 
-<script>
-    // Initialize Supabase client at the top
-   // const supabaseUrl = 'https://bgdamsqiereardlqkfaf.supabase.co'
-   // const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnZGFtc3FpZXJlYXJkbHFrZmFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MTY0NjcsImV4cCI6MjA2Mzk5MjQ2N30.kEZDCGAgWT2ommg6-5L6l0zDZAd4BdtG4WR8jS9iQeY'
-   // const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+   
+<!-- Add this before your script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
 
-    // Check authentication on page load
+<script>
     document.addEventListener('DOMContentLoaded', async () => {
         const isAuthenticated = await checkAuth()
         if (!isAuthenticated) return
+
+        // Initialize Supabase client
+        const supabaseUrl = 'https://bgdamsqiereardlqkfaf.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnZGFtc3FpZXJlYXJkbHFrZmFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MTY0NjcsImV4cCI6MjA2Mzk5MjQ2N30.kEZDCGAgWT2ommg6-5L6l0zDZAd4BdtG4WR8jS9iQeY'
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 
         // Add sign out button to header
         const navLinks = document.querySelector('.nav-links')
@@ -649,216 +652,140 @@
         signOutLi.innerHTML = '<a href="#" onclick="signOut()">Sign Out</a>'
         navLinks.appendChild(signOutLi)
 
-        // Check if user already has a profile
-        // const { data: { user } } = await supabase.auth.getUser();
-        // if (user) {
-        //     const { data: profile } = await supabase
-        //         .from('profiles')
-        //         .select('id')
-        //         .eq('user_id', user.id)
-        //         .single();
-        //     if (profile && profile.id) {
-        //         // Redirect to edit page
-        //         window.location.href = `edit-profile.html?id=${profile.id}`;
-        //         return;
-        //     }
-        // }
+        // Get profile ID from URL
+        const urlParams = new URLSearchParams(window.location.search)
+        const profileId = urlParams.get('id')
+        if (!profileId) {
+            showPopupMessage('No profile ID provided.', 'error')
+            document.getElementById('profileForm').style.display = 'none'
+            return
+        }
 
-        // Replace your existing showMessage logic in the script section with this:
-        function showPopupMessage(message, type) {
-            const overlay = document.getElementById('overlay');
-            const messageElement = document.getElementById(type === 'success' ? 'successMessage' : 'errorMessage');
+        let currentProfile = null
+
+        // Function to load profile data
+        async function loadProfile(profileId) {
+            const { data: profile, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', profileId)
+                .single()
+
+            if (error || !profile) {
+                showPopupMessage('Profile not found.', 'error')
+                document.getElementById('profileForm').style.display = 'none'
+                return
+            }
+
+            currentProfile = profile
+
+            // Pre-fill form fields
+            document.getElementById('name').value = profile.name || ''
+            document.getElementById('age').value = profile.age || ''
+            document.getElementById('gender').value = profile.gender || ''
+            document.getElementById('lookingFor').value = profile.looking_for || ''
+            document.getElementById('city').value = profile.city || ''
+            document.getElementById('email').value = profile.email || ''
+            document.getElementById('phone').value = profile.phone || ''
+            document.getElementById('about').value = profile.about || ''
+            document.getElementById('preferences').value = profile.preferences || ''
+            document.getElementById('tagline').value = profile.tagline || ''
+            document.getElementById('linkedin').value = profile.social_links?.linkedin || ''
+            document.getElementById('instagram').value = profile.social_links?.instagram || ''
+            document.getElementById('reddit').value = profile.social_links?.reddit || ''
+            document.getElementById('twitter').value = profile.social_links?.twitter || ''
+            document.getElementById('charCount').textContent = (profile.tagline || '').length
+
+            // Show current profile image if exists
+            if (profile.image_url) {
+                const previewContainer = document.getElementById('imagePreview')
+                previewContainer.innerHTML = `
+                    <div class="image-preview">
+                        <img src="${profile.image_url}" alt="Current Profile">
+                        <button type="button" class="remove-image" data-type="main">×</button>
+                    </div>
+                `
+            }
+        }
+
+        // Initial profile load
+        await loadProfile(profileId)
+
+        // Add image preview functionality
+        document.getElementById('profileImages').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('imagePreview')
+            previewContainer.innerHTML = ''
             
-            // Update message text
-            messageElement.textContent = message;
-            
-            // Show overlay and message
-            overlay.style.display = 'block';
-            messageElement.style.display = 'block';
-            
-            // Hide after 3 seconds with fade out animation
-            setTimeout(() => {
-                overlay.style.animation = 'fadeOut 0.3s ease-in-out';
-                messageElement.style.animation = 'fadeOut 0.3s ease-in-out';
+            const file = e.target.files[0]
+            if (file) {
+                const reader = new FileReader()
+                const preview = document.createElement('div')
+                preview.className = 'image-preview'
                 
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                    messageElement.style.display = 'none';
-                    overlay.style.animation = 'fadeIn 0.3s ease-in-out';
-                    messageElement.style.animation = 'fadeIn 0.3s ease-in-out';
-                }, 300);
-            }, 3000);
-        }
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <button type="button" class="remove-image" data-type="main">×</button>
+                    `
+                }
+                
+                reader.readAsDataURL(file)
+                previewContainer.appendChild(preview)
+            }
+        })
 
-        // Add these validation functions before your form submission handler
-        function validateEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function validatePhone(phone) {
-            // This regex now includes:
-            // - Indian format: +91 9876543210
-            // - International format: +1-234-567-8900
-            // - US format: (234) 567-8900
-            // - Simple format: 2345678900
-            const phoneRegex = /^(\+91\s?)?[6-9]\d{9}$|^(\+\d{1,3}[-.]?)?\(?\d{3}\)?[-.]?\d{3}[-.]?\d{4}$/;
-            return phoneRegex.test(phone);
-        }
-
-        function showFieldError(fieldId, message) {
-            const field = document.getElementById(fieldId);
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'field-error';
-            errorDiv.textContent = message;
-            
-            // Remove any existing error message
-            const existingError = field.parentElement.querySelector('.field-error');
-            if (existingError) {
-                existingError.remove();
-            }
-            
-            field.classList.add('error');
-            field.parentElement.appendChild(errorDiv);
-        }
-
-        function clearFieldError(fieldId) {
-            const field = document.getElementById(fieldId);
-            const errorDiv = field.parentElement.querySelector('.field-error');
-            if (errorDiv) {
-                errorDiv.remove();
-            }
-            field.classList.remove('error');
-        }
-
-        // Add this function with your other validation functions
-        function validateSocialLinks() {
-            const linkedin = document.getElementById('linkedin').value;
-            const instagram = document.getElementById('instagram').value;
-            const reddit = document.getElementById('reddit').value;
-            const twitter = document.getElementById('twitter').value;
-            
-            // Check if at least one social link is provided
-            const hasSocialLink = linkedin || instagram || reddit || twitter;
-            
-            if (!hasSocialLink) {
-                showFieldError('socialLinksError', 'Please provide at least one social link for contact');
-                return false;
-            }
-            
-            // Validate URLs if provided
-            const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
-            
-            if (linkedin && !urlRegex.test(linkedin)) {
-                showFieldError('linkedin', 'Please enter a valid LinkedIn URL');
-                return false;
-            }
-            if (instagram && !urlRegex.test(instagram)) {
-                showFieldError('instagram', 'Please enter a valid Instagram URL');
-                return false;
-            }
-            if (reddit && !urlRegex.test(reddit)) {
-                showFieldError('reddit', 'Please enter a valid Reddit URL');
-                return false;
-            }
-            if (twitter && !urlRegex.test(twitter)) {
-                showFieldError('twitter', 'Please enter a valid Twitter URL');
-                return false;
-            }
-            
-            return true;
-        }
-
-        // Add this with your other validation functions
-        function validateTagline() {
-            const tagline = document.getElementById('tagline').value.trim();
-            if (!tagline) {
-                showFieldError('tagline', 'Please provide a brief description about yourself');
-                return false;
-            }
-            if (tagline.length < 10) {
-                showFieldError('tagline', 'Description should be at least 10 characters long');
-                return false;
-            }
-            return true;
-        }
-
-        // Update your form submission handler to include social links validation
-        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        // Form submission handler
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
             e.preventDefault()
-            
-            // Clear any existing error messages
-            clearFieldError('email');
-            clearFieldError('phone');
-            clearFieldError('linkedin');
-            clearFieldError('instagram');
-            clearFieldError('reddit');
-            clearFieldError('twitter');
-            document.getElementById('socialLinksError').style.display = 'none';
-            
-            // Get form values
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            
-            // Validate email if provided
-            if (email && !validateEmail(email)) {
-                showFieldError('email', 'Please enter a valid email address');
-                return;
-            }
-            
-            // Validate phone if provided
-            if (phone && !validatePhone(phone)) {
-                showFieldError('phone', 'Please enter a valid phone number');
-                return;
-            }
-            
-            // Validate social links
-            if (!validateSocialLinks()) {
-                return;
-            }
-            
-            // Validate tagline
-            if (!validateTagline()) {
-                return;
-            }
-            
+
             // Show loading state
             const submitButton = document.querySelector('.btn-submit')
             submitButton.disabled = true
-            submitButton.textContent = 'Creating Profile...'
+            submitButton.textContent = 'Updating Profile...'
 
             try {
-                const { data: { user } } = await supabase.auth.getUser();
-                let mainImageUrl = null;
-                const imageUrls = [];
-                
-                // Handle image uploads
-                const imageFiles = Array.from(document.getElementById('profileImages').files);
-                if (imageFiles.length > 0) {
-                    for (let i = 0; i < imageFiles.length; i++) {
-                        const imageFile = imageFiles[i];
-                        const fileExt = imageFile.name.split('.').pop();
-                        const fileName = `${Math.random()}.${fileExt}`;
-                        
-                        const { data: uploadData, error: uploadError } = await supabase.storage
-                            .from('profile-images')
-                            .upload(fileName, imageFile);
-
-                        if (uploadError) throw uploadError;
-                        
-                        const { data: { publicUrl } } = supabase.storage
-                            .from('profile-images')
-                            .getPublicUrl(fileName);
-                        
-                        if (i === 0) {
-                            mainImageUrl = publicUrl;
-                        }
-                        imageUrls.push(publicUrl);
-                    }
+                // Get current user
+                const { data: { user }, error: userError } = await supabase.auth.getUser()
+                if (userError) throw userError
+                if (!user) {
+                    throw new Error('No authenticated user found')
                 }
 
-                const profileData = {
-                    user_id: user.id,
+                // Verify user owns this profile
+                const { data: profileCheck, error: profileError } = await supabase
+                    .from('profiles')
+                    .select('user_id')
+                    .eq('id', profileId)
+                    .single()
+
+                if (profileError) throw profileError
+                if (!profileCheck) throw new Error('Profile not found')
+                if (profileCheck.user_id !== user.id) {
+                    throw new Error('You do not have permission to edit this profile')
+                }
+
+                let mainImageUrl = currentProfile.image_url
+                
+                // Handle new image upload
+                const imageFile = document.getElementById('profileImages').files[0]
+                if (imageFile) {
+                    const fileExt = imageFile.name.split('.').pop()
+                    const fileName = `${Math.random()}.${fileExt}`
+                    
+                    const { data: uploadData, error: uploadError } = await supabase.storage
+                        .from('profile-images')
+                        .upload(fileName, imageFile)
+
+                    if (uploadError) throw uploadError
+                    
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('profile-images')
+                        .getPublicUrl(fileName)
+                    
+                    mainImageUrl = publicUrl
+                }
+
+                const updatedProfile = {
                     name: document.getElementById('name').value,
                     age: document.getElementById('age').value,
                     gender: document.getElementById('gender').value,
@@ -876,162 +803,72 @@
                         twitter: document.getElementById('twitter').value
                     },
                     tagline: document.getElementById('tagline').value.trim(),
-                    created_at: new Date().toISOString()
+                    updated_at: new Date().toISOString()
                 }
 
-                const { data: profile, error: profileError } = await supabase
+                // Update profile
+                const { error: updateError } = await supabase
                     .from('profiles')
-                    .insert([profileData])
-                    .select()
-                    .single();
+                    .update(updatedProfile)
+                    .eq('id', profileId)
 
-                if (profileError) throw profileError;
+                if (updateError) throw updateError
 
-                // Insert additional images
-                if (imageUrls.length > 1) {
-                    const additionalImages = imageUrls.slice(1).map((url, index) => ({
-                        profile_id: profile.id,
-                        image_url: url,
-                        display_order: index + 1
-                    }));
-
-                    const { error: imagesError } = await supabase
-                        .from('profile_images')
-                        .insert(additionalImages);
-
-                    if (imagesError) throw imagesError;
-                }
-
-                // Show success message
-                showPopupMessage('Profile created successfully!', 'success')
+                showPopupMessage('Profile updated successfully!', 'success')
                 
-                // Clear form
-                document.getElementById('profileForm').reset()
-                document.getElementById('imagePreview').innerHTML = '';
-                
-                // Redirect to profile page
+                // Redirect to profile details page after successful update
                 setTimeout(() => {
-                    window.location.href = `profile-details.html?id=${profile.id}`;
-                }, 2000);
+                    window.location.href = `profile-details.html?id=${profileId}`
+                }, 2000)
 
             } catch (error) {
                 console.error('Error:', error)
-                // Show error message
-                showPopupMessage('Failed to create profile. Please try again.', 'error')
+                showPopupMessage(error.message || 'An error occurred while updating your profile', 'error')
             } finally {
-                // Reset button state
                 submitButton.disabled = false
-                submitButton.textContent = 'Create Profile'
+                submitButton.textContent = 'Save Changes'
             }
         })
 
-        // Add real-time validation for email and phone fields
-        document.getElementById('email').addEventListener('input', function(e) {
-            const email = e.target.value;
-            if (email) {
-                if (!validateEmail(email)) {
-                    showFieldError('email', 'Please enter a valid email address');
-                } else {
-                    clearFieldError('email');
-                }
-            } else {
-                clearFieldError('email');
-            }
-        });
-
-        document.getElementById('phone').addEventListener('input', function(e) {
-            const phone = e.target.value;
-            if (phone) {
-                if (!validatePhone(phone)) {
-                    showFieldError('phone', 'Please enter a valid phone number');
-                } else {
-                    clearFieldError('phone');
-                }
-            } else {
-                clearFieldError('phone');
-            }
-        });
-
-        // Add real-time validation for social links
-        ['linkedin', 'instagram', 'reddit', 'twitter'].forEach(platform => {
-            document.getElementById(platform).addEventListener('input', function(e) {
-                const url = e.target.value;
-                if (url) {
-                    const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
-                    if (!urlRegex.test(url)) {
-                        showFieldError(platform, `Please enter a valid ${platform} URL`);
-                    } else {
-                        clearFieldError(platform);
-                    }
-                } else {
-                    clearFieldError(platform);
-                }
-            });
-        });
-
-        // Add this to your existing JavaScript
+        // Add character count for tagline
         document.getElementById('tagline').addEventListener('input', function(e) {
-            const tagline = e.target.value;
-            const charCount = document.getElementById('charCount');
-            const remaining = tagline.length;
+            const tagline = e.target.value
+            const charCount = document.getElementById('charCount')
+            const remaining = tagline.length
             
-            charCount.textContent = remaining;
+            charCount.textContent = remaining
             
-            // Update color based on character count
             if (remaining > 250) {
-                charCount.className = 'danger';
+                charCount.className = 'danger'
             } else if (remaining > 200) {
-                charCount.className = 'warning';
+                charCount.className = 'warning'
             } else {
-                charCount.className = '';
+                charCount.className = ''
             }
-            
-            // Clear error if exists
-            clearFieldError('tagline');
-        });
-
-        // Add this after your existing script
-        document.getElementById('profileImages').addEventListener('change', function(e) {
-            const previewContainer = document.getElementById('imagePreview');
-            previewContainer.innerHTML = '';
-            
-            const files = Array.from(e.target.files).slice(0, 4); // Limit to 4 images
-            
-            files.forEach((file, index) => {
-                const reader = new FileReader();
-                const preview = document.createElement('div');
-                preview.className = 'image-preview';
-                
-                reader.onload = function(e) {
-                    preview.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
-                        <button type="button" class="remove-image" data-index="${index}">×</button>
-                    `;
-                };
-                
-                reader.readAsDataURL(file);
-                previewContainer.appendChild(preview);
-            });
-            
-            // Add event listeners for remove buttons
-            document.querySelectorAll('.remove-image').forEach(button => {
-                button.addEventListener('click', function() {
-                    const index = this.getAttribute('data-index');
-                    const dt = new DataTransfer();
-                    const files = document.getElementById('profileImages').files;
-                    
-                    for (let i = 0; i < files.length; i++) {
-                        if (i !== parseInt(index)) {
-                            dt.items.add(files[i]);
-                        }
-                    }
-                    
-                    document.getElementById('profileImages').files = dt.files;
-                    this.parentElement.remove();
-                });
-            });
-        });
+        })
     })
-    </script>
+
+    function showPopupMessage(message, type) {
+        const overlay = document.getElementById('overlay')
+        const messageElement = document.getElementById(type === 'success' ? 'successMessage' : 'errorMessage')
+        
+        messageElement.textContent = message
+        
+        overlay.style.display = 'block'
+        messageElement.style.display = 'block'
+        
+        setTimeout(() => {
+            overlay.style.animation = 'fadeOut 0.3s ease-in-out'
+            messageElement.style.animation = 'fadeOut 0.3s ease-in-out'
+            
+            setTimeout(() => {
+                overlay.style.display = 'none'
+                messageElement.style.display = 'none'
+                overlay.style.animation = 'fadeIn 0.3s ease-in-out'
+                messageElement.style.animation = 'fadeIn 0.3s ease-in-out'
+            }, 300)
+        }, 3000)
+    }
+</script>
 </body>
 </html> 

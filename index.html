@@ -552,9 +552,12 @@
             <div class="hero-signup" style="width: 600px;">
                 <h3 style="margin-bottom: 20px;">Get Started Now</h3>
                 <!-- <iframe src="https://embeds.beehiiv.com/1806ed0f-1a2e-471d-a6ca-84f135010b5d?slim=true" data-test-id="beehiiv-embed" height="52" frameborder="0" scrolling="no" style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 500px;"></iframe> -->
-                <a href="create-profile.html" class="create-profile-btn">Create Profile</a>
-                <a href="profiles.html" class="view-profile-btn">View Profiles</a>
-                <p style="font-size: 0.9rem; color: var(--gray);">40+ profiles and counting</p>
+                <div id="profileButtons">
+                    <a href="create-profile.html" class="create-profile-btn" style="display: none;">Create Profile</a>
+                    <a href="#" class="create-profile-btn" id="editProfileBtn" style="display: none;">Edit Profile</a>
+                </div>
+                <a href="profiles.html" class="view-profile-btn">View All Profiles</a>
+                <p style="font-size: 0.9rem; color: var(--gray);">55+ genuine profiles and counting</p>
             </div>
         </div>
     </section>
@@ -671,10 +674,49 @@
         </div>
     </footer>
 
+      <!-- Add this before your script -->
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <script src="auth.js"></script>
+
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.querySelector('.nav-links');
+
+         // Add sign out button to header
+        // const navLinks = document.querySelector('.nav-links')
+            const signOutLi = document.createElement('li')
+            signOutLi.innerHTML = '<a href="#" onclick="signOut()">Sign Out</a>'
+            navLinks.appendChild(signOutLi)
+
+        // Initialize Supabase client
+        const supabaseUrl = 'https://bgdamsqiereardlqkfaf.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnZGFtc3FpZXJlYXJkbHFrZmFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MTY0NjcsImV4cCI6MjA2Mzk5MjQ2N30.kEZDCGAgWT2ommg6-5L6l0zDZAd4BdtG4WR8jS9iQeY'
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+
+        // Check if user is authenticated and has a profile
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('user_id', user.id)
+                .single();
+
+            const createProfileBtn = document.querySelector('.create-profile-btn');
+            const editProfileBtn = document.getElementById('editProfileBtn');
+
+            if (profile && profile.id) {
+                // User has a profile, show edit button
+                createProfileBtn.style.display = 'none';
+                editProfileBtn.style.display = 'inline-block';
+                editProfileBtn.href = `edit-profile.html?id=${profile.id}`;
+            } else {
+                // User doesn't have a profile, show create button
+                createProfileBtn.style.display = 'inline-block';
+                editProfileBtn.style.display = 'none';
+            }
+        }
 
         mobileMenuBtn.addEventListener('click', function(e) {
             e.stopPropagation();
