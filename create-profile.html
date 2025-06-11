@@ -570,7 +570,7 @@
                     <div class="form-group">
                         <label for="profileImages">Profile Images <span class="required">*</span></label>
                         <input type="file" id="profileImages" class="form-control" required accept="image/*" multiple>
-                        <small class="form-text">Upload up to 4 photos of yourself (first image will be your main profile picture)</small>
+                        <small class="form-text">Upload 1 image</small>
                         <div id="imagePreview" class="image-preview-container"></div>
                     </div>
 
@@ -634,9 +634,9 @@
 
 <script>
     // Initialize Supabase client at the top
-   // const supabaseUrl = 'https://bgdamsqiereardlqkfaf.supabase.co'
-   // const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnZGFtc3FpZXJlYXJkbHFrZmFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MTY0NjcsImV4cCI6MjA2Mzk5MjQ2N30.kEZDCGAgWT2ommg6-5L6l0zDZAd4BdtG4WR8jS9iQeY'
-   // const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+    //const supabaseUrl = 'https://bgdamsqiereardlqkfaf.supabase.co'
+    //const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnZGFtc3FpZXJlYXJkbHFrZmFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MTY0NjcsImV4cCI6MjA2Mzk5MjQ2N30.kEZDCGAgWT2ommg6-5L6l0zDZAd4BdtG4WR8jS9iQeY'
+    //const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 
     // Check authentication on page load
     document.addEventListener('DOMContentLoaded', async () => {
@@ -649,20 +649,23 @@
         signOutLi.innerHTML = '<a href="#" onclick="signOut()">Sign Out</a>'
         navLinks.appendChild(signOutLi)
 
-        // Check if user already has a profile
-        // const { data: { user } } = await supabase.auth.getUser();
-        // if (user) {
-        //     const { data: profile } = await supabase
-        //         .from('profiles')
-        //         .select('id')
-        //         .eq('user_id', user.id)
-        //         .single();
-        //     if (profile && profile.id) {
-        //         // Redirect to edit page
-        //         window.location.href = `edit-profile.html?id=${profile.id}`;
-        //         return;
-        //     }
-        // }
+        // Check if user already has a profile and redirect to edit if they do
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('user_id', user.id)
+                .single();
+            if (profile && profile.id) {
+                // Redirect to edit page
+                showPopupMessage('You already have a profile. Redirecting to edit page...', 'error');
+                setTimeout(() => {
+                    window.location.href = `edit-profile.html?id=${profile.id}`;
+                }, 2000);
+                return;
+            }
+        }
 
         // Replace your existing showMessage logic in the script section with this:
         function showPopupMessage(message, type) {
@@ -787,6 +790,12 @@
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
             e.preventDefault()
             
+            // Prevent multiple submissions
+            const submitButton = document.querySelector('.btn-submit')
+            if (submitButton.disabled) {
+                return // Already submitting
+            }
+            
             // Clear any existing error messages
             clearFieldError('email');
             clearFieldError('phone');
@@ -822,29 +831,57 @@
                 return;
             }
             
-            // Show loading state
-            const submitButton = document.querySelector('.btn-submit')
+            // Show loading state immediately
             submitButton.disabled = true
             submitButton.textContent = 'Creating Profile...'
 
             try {
-                const { data: { user } } = await supabase.auth.getUser();
+                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                if (userError) throw userError;
+                if (!user) throw new Error('User not authenticated');
+
+                // Check if user already has a profile to prevent duplicates
+                const { data: existingProfile, error: checkError } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .single();
+
+                if (checkError && checkError.code !== 'PGRST116') {
+                    // PGRST116 is "not found" error, which is expected
+                    throw checkError;
+                }
+
+                if (existingProfile) {
+                    showPopupMessage('You already have a profile. Redirecting to edit page...', 'error');
+                    setTimeout(() => {
+                        window.location.href = `edit-profile.html?id=${existingProfile.id}`;
+                    }, 2000);
+                    return;
+                }
+
                 let mainImageUrl = null;
                 const imageUrls = [];
+                let profileId = null;
                 
-                // Handle image uploads
+                // Handle image uploads first
                 const imageFiles = Array.from(document.getElementById('profileImages').files);
                 if (imageFiles.length > 0) {
+                    submitButton.textContent = 'Uploading images...';
+                    
                     for (let i = 0; i < imageFiles.length; i++) {
                         const imageFile = imageFiles[i];
                         const fileExt = imageFile.name.split('.').pop();
-                        const fileName = `${Math.random()}.${fileExt}`;
+                        const fileName = `${user.id}-${Date.now()}-${i}.${fileExt}`;
                         
                         const { data: uploadData, error: uploadError } = await supabase.storage
                             .from('profile-images')
                             .upload(fileName, imageFile);
 
-                        if (uploadError) throw uploadError;
+                        if (uploadError) {
+                            console.error('Image upload error:', uploadError);
+                            throw new Error(`Failed to upload image ${i + 1}: ${uploadError.message}`);
+                        }
                         
                         const { data: { publicUrl } } = supabase.storage
                             .from('profile-images')
@@ -857,40 +894,51 @@
                     }
                 }
 
+                submitButton.textContent = 'Creating profile...';
+
+                // Create profile data
                 const profileData = {
                     user_id: user.id,
-                    name: document.getElementById('name').value,
-                    age: document.getElementById('age').value,
+                    name: document.getElementById('name').value.trim(),
+                    age: parseInt(document.getElementById('age').value),
                     gender: document.getElementById('gender').value,
                     looking_for: document.getElementById('lookingFor').value,
-                    city: document.getElementById('city').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    about: document.getElementById('about').value,
-                    preferences: document.getElementById('preferences').value,
+                    city: document.getElementById('city').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    about: document.getElementById('about').value.trim(),
+                    preferences: document.getElementById('preferences').value.trim(),
                     image_url: mainImageUrl,
                     social_links: {
-                        linkedin: document.getElementById('linkedin').value,
-                        instagram: document.getElementById('instagram').value,
-                        reddit: document.getElementById('reddit').value,
-                        twitter: document.getElementById('twitter').value
+                        linkedin: document.getElementById('linkedin').value.trim(),
+                        instagram: document.getElementById('instagram').value.trim(),
+                        reddit: document.getElementById('reddit').value.trim(),
+                        twitter: document.getElementById('twitter').value.trim()
                     },
                     tagline: document.getElementById('tagline').value.trim(),
                     created_at: new Date().toISOString()
-                }
+                };
 
+                // Insert profile
                 const { data: profile, error: profileError } = await supabase
                     .from('profiles')
                     .insert([profileData])
                     .select()
                     .single();
 
-                if (profileError) throw profileError;
+                if (profileError) {
+                    console.error('Profile creation error:', profileError);
+                    throw new Error(`Failed to create profile: ${profileError.message}`);
+                }
 
-                // Insert additional images
+                profileId = profile.id;
+
+                // Insert additional images if any
                 if (imageUrls.length > 1) {
+                    submitButton.textContent = 'Saving additional images...';
+                    
                     const additionalImages = imageUrls.slice(1).map((url, index) => ({
-                        profile_id: profile.id,
+                        profile_id: profileId,
                         image_url: url,
                         display_order: index + 1
                     }));
@@ -899,31 +947,48 @@
                         .from('profile_images')
                         .insert(additionalImages);
 
-                    if (imagesError) throw imagesError;
+                    if (imagesError) {
+                        console.error('Additional images error:', imagesError);
+                        // Don't fail the entire process for additional images
+                        console.warn('Some additional images could not be saved, but profile was created successfully');
+                    }
                 }
 
                 // Show success message
-                showPopupMessage('Profile created successfully!', 'success')
+                showPopupMessage('Profile created successfully! Redirecting...', 'success');
                 
                 // Clear form
-                document.getElementById('profileForm').reset()
+                document.getElementById('profileForm').reset();
                 document.getElementById('imagePreview').innerHTML = '';
                 
                 // Redirect to profile page
                 setTimeout(() => {
-                    window.location.href = `profile-details.html?id=${profile.id}`;
+                    window.location.href = `profile-details.html?id=${profileId}`;
                 }, 2000);
 
             } catch (error) {
-                console.error('Error:', error)
-                // Show error message
-                showPopupMessage('Failed to create profile. Please try again.', 'error')
+                console.error('Error creating profile:', error);
+                
+                // Provide more specific error messages
+                let errorMessage = 'Failed to create profile. Please try again.';
+                
+                if (error.message.includes('upload')) {
+                    errorMessage = 'Failed to upload images. Please try with smaller image files.';
+                } else if (error.message.includes('duplicate')) {
+                    errorMessage = 'A profile already exists for this account.';
+                } else if (error.message.includes('network')) {
+                    errorMessage = 'Network error. Please check your connection and try again.';
+                } else if (error.message.includes('authentication')) {
+                    errorMessage = 'Authentication error. Please sign in again.';
+                }
+                
+                showPopupMessage(errorMessage, 'error');
             } finally {
                 // Reset button state
-                submitButton.disabled = false
-                submitButton.textContent = 'Create Profile'
+                submitButton.disabled = false;
+                submitButton.textContent = 'Create Profile';
             }
-        })
+        });
 
         // Add real-time validation for email and phone fields
         document.getElementById('email').addEventListener('input', function(e) {
