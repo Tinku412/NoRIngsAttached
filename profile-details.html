@@ -910,7 +910,6 @@
                 // Contact Info
                 let contactInfo = ''
                 if (profile.email) contactInfo += `<strong>Email:</strong> <a href="mailto:${profile.email}">${profile.email}</a><br>`
-                if (profile.phone) contactInfo += `<strong>Phone:</strong> <a href="tel:${profile.phone}">${profile.phone}</a><br>`
                 document.getElementById('contactInfo').innerHTML = contactInfo || '—'
 
                 // Social Links
