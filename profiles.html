@@ -736,7 +736,11 @@
                 const profilesGrid = document.querySelector('.profiles-grid')
                 profilesGrid.innerHTML = '' // Clear existing profiles
 
-                if (!profiles || profiles.length === 0) {
+                // Filter out blocked user ID
+                const blockedUserId = '87079d49-ac8b-4ba6-9678-91bf9e8904d7' // Replace with the actual user ID to block
+                const filteredProfiles = profiles.filter(profile => profile.id !== blockedUserId)
+
+                if (!filteredProfiles || filteredProfiles.length === 0) {
                     profilesGrid.innerHTML = `
                         <div class="no-results">
                             <p>No profiles found matching your criteria</p>
@@ -745,7 +749,7 @@
                     return
                 }
 
-                profiles.forEach(profile => {
+                filteredProfiles.forEach(profile => {
                     const profileCard = `
                         <a href="profile-details.html?id=${profile.id}" class="profile-card">
                             <div class="gender-tag">${profile.gender || 'Not specified'}, ${profile.age || 'Age N/A'}</div>
