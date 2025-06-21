@@ -854,7 +854,7 @@
 
                 const { data: profile, error } = await supabase
                     .from('profiles')
-                    .select('*')
+                    .select('id, name, age, gender, looking_for, city, image_url, tagline, about, preferences, social_links, created_at, user_id')
                     .eq('id', profileId)
                     .single()
 
