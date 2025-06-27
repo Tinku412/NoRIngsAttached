@@ -59,8 +59,14 @@ async function signInWithEmail(email, password) {
             email: email,
             password: password
         })
-        if (error) throw error
+        if (error) {
+            console.error('Supabase auth error:', error);
+            return { success: false, message: error.message }
+        }
+        
+        // If successful, redirect
         window.location.href = '/profiles.html'
+        return { success: true }
     } catch (error) {
         console.error('Error signing in:', error.message)
         return { success: false, message: error.message }
@@ -96,4 +102,13 @@ async function signOut() {
 async function getCurrentUser() {
     const { data: { user }, error } = await supabase.auth.getUser()
     return user
-} 
+}
+
+// Make functions globally accessible
+window.checkAuth = checkAuth;
+window.signInWithGoogle = signInWithGoogle;
+window.signUpWithEmail = signUpWithEmail;
+window.signInWithEmail = signInWithEmail;
+window.resetPassword = resetPassword;
+window.signOut = signOut;
+window.getCurrentUser = getCurrentUser; 

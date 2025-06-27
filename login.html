@@ -451,10 +451,13 @@
             
             try {
                 const result = await signInWithEmail(email, password);
-                if (!result.success) {
-                    showMessage('signinError', result.message, 'error');
+                if (!result || !result.success) {
+                    const errorMessage = result ? result.message : 'Sign in failed';
+                    console.error('Sign in error:', errorMessage);
+                    showMessage('signinError', errorMessage, 'error');
                 }
             } catch (error) {
+                console.error('Sign in error:', error);
                 showMessage('signinError', 'An error occurred. Please try again.', 'error');
             } finally {
                 setLoading('signinForm', false);
