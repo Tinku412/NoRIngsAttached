@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --primary: #e4b902;
@@ -16,6 +17,8 @@
             --gray: #6B7280;
             --white: #FFFFFF;
             --border: #E5E7EB;
+            --error: #EF4444;
+            --success: #10B981;
         }
 
         * {
@@ -26,11 +29,12 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--light);
+            background: linear-gradient(135deg, var(--light) 0%, #f0f7f7 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .login-container {
@@ -39,8 +43,9 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 400px;
-            width: 90%;
+            max-width: 450px;
+            width: 100%;
+            position: relative;
         }
 
         .logo {
@@ -50,58 +55,470 @@
         .logo h1 {
             font-size: 2rem;
             color: var(--dark);
+            font-weight: 700;
         }
 
         .logo span {
             color: var(--primary);
         }
 
-        .login-btn {
-            background-color: var(--white);
+        .welcome-text {
+            margin-bottom: 30px;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            background: var(--light);
+            padding: 4px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: var(--white);
+            color: var(--dark);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
             border: 2px solid var(--border);
-            padding: 12px 24px;
             border-radius: 12px;
             font-size: 1rem;
-            font-weight: 500;
-            color: var(--dark);
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(228, 185, 2, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 0.875rem;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #d4a902;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(228, 185, 2, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+            border-color: var(--primary);
+        }
+
+        .btn-google {
+            background: var(--white);
+            color: var(--dark);
+            border: 2px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            width: 100%;
-            transition: all 0.3s ease;
         }
 
-        .login-btn:hover {
-            background-color: var(--light);
+        .btn-google:hover {
+            background: var(--light);
             border-color: var(--primary);
         }
 
-        .login-btn img {
-            width: 24px;
-            height: 24px;
+        .btn-google img {
+            width: 20px;
+            height: 20px;
         }
 
-        .welcome-text {
-            margin-bottom: 30px;
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
             color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading .btn {
+            position: relative;
+        }
+
+        .loading .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle .form-control {
+            padding-right: 50px;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--dark);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .welcome-text {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">
-            <h1>No Rings Attached<span> - D.I.N.K</span></h1>
+            <h1>No Rings Attached<span> - Childfree</span></h1>
         </div>
         <p class="welcome-text">Welcome! Please sign in to continue.</p>
-        <button onclick="signInWithGoogle()" class="login-btn">
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('signin')">Sign In</button>
+            <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- Sign In Form -->
+        <form id="signinForm" class="auth-form active">
+            <div class="form-group">
+                <label for="signinEmail">Email</label>
+                <input type="email" id="signinEmail" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="signinPassword">Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="signinPassword" class="form-control" required>
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword('signinPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+            <div class="forgot-password">
+                <a href="#" onclick="showForgotPassword()">Forgot your password?</a>
+            </div>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signupForm" class="auth-form">
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="signupPassword" class="form-control" required minlength="6">
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword('signupPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <small style="color: var(--gray); font-size: 0.8rem;">Minimum 6 characters</small>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="confirmPassword" class="form-control" required>
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword('confirmPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
+
+        <button onclick="signInWithGoogle()" class="btn btn-google">
             <img src="https://www.google.com/favicon.ico" alt="Google">
-            Sign in with Google
+            Continue with Google
         </button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
+    <script>
+        function switchTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update forms
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            if (tab === 'signin') {
+                document.getElementById('signinForm').classList.add('active');
+            } else {
+                document.getElementById('signupForm').classList.add('active');
+            }
+            
+            // Clear any error messages
+            clearMessages();
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const btn = input.nextElementSibling;
+            const icon = btn.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function showMessage(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = type === 'error' ? 'error-message' : 'success-message';
+            element.style.display = 'block';
+        }
+
+        function clearMessages() {
+            document.querySelectorAll('.error-message, .success-message').forEach(msg => {
+                msg.style.display = 'none';
+            });
+        }
+
+        function setLoading(formId, loading) {
+            const form = document.getElementById(formId);
+            if (loading) {
+                form.classList.add('loading');
+            } else {
+                form.classList.remove('loading');
+            }
+        }
+
+        // Sign In Form Handler
+        document.getElementById('signinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearMessages();
+            
+            const email = document.getElementById('signinEmail').value;
+            const password = document.getElementById('signinPassword').value;
+            
+            if (!email || !password) {
+                showMessage('signinError', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            setLoading('signinForm', true);
+            
+            try {
+                const result = await signInWithEmail(email, password);
+                if (!result.success) {
+                    showMessage('signinError', result.message, 'error');
+                }
+            } catch (error) {
+                showMessage('signinError', 'An error occurred. Please try again.', 'error');
+            } finally {
+                setLoading('signinForm', false);
+            }
+        });
+
+        // Sign Up Form Handler
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearMessages();
+            
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!email || !password || !confirmPassword) {
+                showMessage('signupError', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('signupError', 'Passwords do not match', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('signupError', 'Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            setLoading('signupForm', true);
+            
+            try {
+                const result = await signUpWithEmail(email, password);
+                if (result.success) {
+                    showMessage('signupSuccess', result.message, 'success');
+                    document.getElementById('signupForm').reset();
+                } else {
+                    showMessage('signupError', result.message, 'error');
+                }
+            } catch (error) {
+                showMessage('signupError', 'An error occurred. Please try again.', 'error');
+            } finally {
+                setLoading('signupForm', false);
+            }
+        });
+
+        function showForgotPassword() {
+            const email = prompt('Enter your email address to reset your password:');
+            if (email) {
+                resetPassword(email).then(result => {
+                    if (result.success) {
+                        alert(result.message);
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                });
+            }
+        }
+
+        // Add error message containers
+        document.getElementById('signinForm').insertAdjacentHTML('beforeend', '<div id="signinError" class="error-message" style="display: none;"></div>');
+        document.getElementById('signupForm').insertAdjacentHTML('beforeend', '<div id="signupError" class="error-message" style="display: none;"></div>');
+        document.getElementById('signupForm').insertAdjacentHTML('beforeend', '<div id="signupSuccess" class="success-message" style="display: none;"></div>');
+    </script>
 </body>
 </html> 

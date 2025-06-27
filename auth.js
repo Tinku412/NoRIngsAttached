@@ -34,6 +34,53 @@ async function signInWithGoogle() {
     }
 }
 
+// Sign up with email/password
+async function signUpWithEmail(email, password) {
+    try {
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                emailRedirectTo: window.location.origin + '/profiles.html'
+            }
+        })
+        if (error) throw error
+        return { success: true, message: 'Check your email for confirmation link' }
+    } catch (error) {
+        console.error('Error signing up:', error.message)
+        return { success: false, message: error.message }
+    }
+}
+
+// Sign in with email/password
+async function signInWithEmail(email, password) {
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        })
+        if (error) throw error
+        window.location.href = '/profiles.html'
+    } catch (error) {
+        console.error('Error signing in:', error.message)
+        return { success: false, message: error.message }
+    }
+}
+
+// Reset password
+async function resetPassword(email) {
+    try {
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/reset-password.html'
+        })
+        if (error) throw error
+        return { success: true, message: 'Check your email for password reset link' }
+    } catch (error) {
+        console.error('Error resetting password:', error.message)
+        return { success: false, message: error.message }
+    }
+}
+
 // Sign out
 async function signOut() {
     try {
