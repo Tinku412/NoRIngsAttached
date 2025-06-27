@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Login | No Rings Attached</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,6 +35,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .login-container {
@@ -129,6 +130,7 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(228, 185, 2, 0.1);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .form-control.error {
@@ -293,6 +295,9 @@
         @media (max-width: 480px) {
             .login-container {
                 padding: 30px 20px;
+                margin: 10px;
+                max-width: 100%;
+                min-height: auto;
             }
             
             .logo h1 {
@@ -301,6 +306,199 @@
             
             .welcome-text {
                 font-size: 1rem;
+            }
+
+            .auth-tabs {
+                margin-bottom: 25px;
+            }
+
+            .auth-tab {
+                padding: 15px 12px;
+                font-size: 0.95rem;
+            }
+
+            .form-control {
+                padding: 18px 20px;
+                font-size: 16px; /* Prevents zoom on iOS */
+                -webkit-appearance: none;
+                border-radius: 8px;
+            }
+
+            .btn {
+                padding: 18px 20px;
+                font-size: 16px;
+                -webkit-appearance: none;
+                border-radius: 8px;
+            }
+
+            .password-toggle-btn {
+                right: 12px;
+                padding: 8px;
+                font-size: 18px;
+            }
+
+            .password-toggle .form-control {
+                padding-right: 45px;
+            }
+
+            /* Prevent zoom on input focus */
+            input[type="email"], 
+            input[type="password"], 
+            input[type="text"] {
+                font-size: 16px !important;
+            }
+
+            /* Better touch targets */
+            .auth-tab, .btn, .password-toggle-btn {
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+
+            /* Improve form spacing on mobile */
+            .form-group {
+                margin-bottom: 25px;
+            }
+
+            .form-group label {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+
+            .error-message, .success-message {
+                font-size: 0.9rem;
+                margin-top: 8px;
+            }
+
+            /* Better divider spacing */
+            .divider {
+                margin: 25px 0;
+            }
+
+            .divider span {
+                padding: 0 20px;
+                font-size: 0.85rem;
+            }
+
+            /* Improve Google button on mobile */
+            .btn-google {
+                padding: 18px 20px;
+                font-size: 16px;
+            }
+
+            .btn-google img {
+                width: 22px;
+                height: 22px;
+            }
+
+            /* Better forgot password link */
+            .forgot-password {
+                margin-top: 20px;
+            }
+
+            .forgot-password a {
+                font-size: 1rem;
+                padding: 10px 0;
+                display: inline-block;
+            }
+        }
+
+        /* Additional mobile optimizations */
+        @media (max-width: 360px) {
+            .login-container {
+                padding: 25px 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+
+            .auth-tab {
+                padding: 12px 8px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Better focus states for mobile */
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(228, 185, 2, 0.1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Disable text selection on buttons for better mobile UX */
+        .btn, .auth-tab {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Better loading state for mobile */
+        .loading .btn::after {
+            width: 18px;
+            height: 18px;
+            margin: -9px 0 0 -9px;
+        }
+
+        /* Mobile-specific improvements */
+        @media (max-height: 600px) {
+            .login-container {
+                padding: 20px;
+                margin: 5px;
+            }
+            
+            .logo {
+                margin-bottom: 20px;
+            }
+            
+            .welcome-text {
+                margin-bottom: 20px;
+            }
+            
+            .auth-tabs {
+                margin-bottom: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .divider {
+                margin: 15px 0;
+            }
+        }
+
+        /* Handle mobile keyboard better */
+        @media (max-height: 500px) {
+            body {
+                align-items: flex-start;
+                padding-top: 10px;
+            }
+            
+            .login-container {
+                margin: 0 10px;
+                padding: 15px;
+            }
+        }
+
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            .form-control {
+                -webkit-appearance: none;
+                border-radius: 12px;
+            }
+            
+            .btn {
+                -webkit-appearance: none;
+                border-radius: 12px;
+            }
+        }
+
+        /* Android Chrome specific fixes */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .form-control {
+                -webkit-appearance: none;
             }
         }
     </style>
@@ -398,6 +596,46 @@
 
             console.log('All auth functions loaded successfully');
 
+            // Mobile-specific improvements
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // Prevent zoom on input focus
+                const inputs = document.querySelectorAll('input[type="email"], input[type="password"], input[type="text"]');
+                inputs.forEach(input => {
+                    input.addEventListener('focus', function() {
+                        // Ensure font size is 16px to prevent zoom
+                        this.style.fontSize = '16px';
+                    });
+                });
+
+                // Better touch handling for buttons
+                const buttons = document.querySelectorAll('.btn, .auth-tab, .password-toggle-btn');
+                buttons.forEach(button => {
+                    button.addEventListener('touchstart', function(e) {
+                        this.style.transform = 'scale(0.98)';
+                    });
+                    
+                    button.addEventListener('touchend', function(e) {
+                        this.style.transform = '';
+                    });
+                });
+
+                // Handle mobile keyboard better
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        // Hide keyboard on mobile after form submission
+                        if (isMobile) {
+                            const activeElement = document.activeElement;
+                            if (activeElement && activeElement.blur) {
+                                activeElement.blur();
+                            }
+                        }
+                    });
+                });
+            }
+
             function switchTab(tab) {
                 // Update tab buttons
                 document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
@@ -413,6 +651,14 @@
                 
                 // Clear any error messages
                 clearMessages();
+
+                // Focus on first input for better mobile UX
+                setTimeout(() => {
+                    const firstInput = document.querySelector('.auth-form.active input');
+                    if (firstInput && isMobile) {
+                        firstInput.focus();
+                    }
+                }, 100);
             }
 
             function togglePassword(inputId) {
@@ -429,6 +675,13 @@
                     icon.classList.remove('fa-eye-slash');
                     icon.classList.add('fa-eye');
                 }
+
+                // Better mobile focus handling
+                if (isMobile) {
+                    setTimeout(() => {
+                        input.focus();
+                    }, 50);
+                }
             }
 
             function showMessage(elementId, message, type) {
@@ -436,6 +689,13 @@
                 element.textContent = message;
                 element.className = type === 'error' ? 'error-message' : 'success-message';
                 element.style.display = 'block';
+
+                // Auto-hide messages on mobile after 5 seconds
+                if (isMobile) {
+                    setTimeout(() => {
+                        element.style.display = 'none';
+                    }, 5000);
+                }
             }
 
             function clearMessages() {
@@ -448,8 +708,16 @@
                 const form = document.getElementById(formId);
                 if (loading) {
                     form.classList.add('loading');
+                    // Disable all inputs during loading
+                    form.querySelectorAll('input, button').forEach(el => {
+                        el.disabled = true;
+                    });
                 } else {
                     form.classList.remove('loading');
+                    // Re-enable all inputs after loading
+                    form.querySelectorAll('input, button').forEach(el => {
+                        el.disabled = false;
+                    });
                 }
             }
 
