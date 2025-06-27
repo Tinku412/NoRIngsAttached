@@ -379,149 +379,174 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script>
-        function switchTab(tab) {
-            // Update tab buttons
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Update forms
-            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-            if (tab === 'signin') {
-                document.getElementById('signinForm').classList.add('active');
-            } else {
-                document.getElementById('signupForm').classList.add('active');
-            }
-            
-            // Clear any error messages
-            clearMessages();
-        }
-
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const btn = input.nextElementSibling;
-            const icon = btn.querySelector('i');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
-
-        function showMessage(elementId, message, type) {
-            const element = document.getElementById(elementId);
-            element.textContent = message;
-            element.className = type === 'error' ? 'error-message' : 'success-message';
-            element.style.display = 'block';
-        }
-
-        function clearMessages() {
-            document.querySelectorAll('.error-message, .success-message').forEach(msg => {
-                msg.style.display = 'none';
-            });
-        }
-
-        function setLoading(formId, loading) {
-            const form = document.getElementById(formId);
-            if (loading) {
-                form.classList.add('loading');
-            } else {
-                form.classList.remove('loading');
-            }
-        }
-
-        // Sign In Form Handler
-        document.getElementById('signinForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearMessages();
-            
-            const email = document.getElementById('signinEmail').value;
-            const password = document.getElementById('signinPassword').value;
-            
-            if (!email || !password) {
-                showMessage('signinError', 'Please fill in all fields', 'error');
+        // Wait for DOM and auth.js to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure auth functions are available
+            if (typeof signInWithEmail === 'undefined') {
+                console.error('signInWithEmail function not found. Auth.js may not be loaded properly.');
                 return;
             }
-            
-            setLoading('signinForm', true);
-            
-            try {
-                const result = await signInWithEmail(email, password);
-                if (!result || !result.success) {
-                    const errorMessage = result ? result.message : 'Sign in failed';
-                    console.error('Sign in error:', errorMessage);
-                    showMessage('signinError', errorMessage, 'error');
-                }
-            } catch (error) {
-                console.error('Sign in error:', error);
-                showMessage('signinError', 'An error occurred. Please try again.', 'error');
-            } finally {
-                setLoading('signinForm', false);
-            }
-        });
 
-        // Sign Up Form Handler
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearMessages();
+            // Test that all required functions are available
+            const requiredFunctions = ['signInWithEmail', 'signUpWithEmail', 'resetPassword', 'signInWithGoogle'];
+            const missingFunctions = requiredFunctions.filter(func => typeof window[func] === 'undefined');
             
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (!email || !password || !confirmPassword) {
-                showMessage('signupError', 'Please fill in all fields', 'error');
+            if (missingFunctions.length > 0) {
+                console.error('Missing auth functions:', missingFunctions);
                 return;
             }
-            
-            if (password !== confirmPassword) {
-                showMessage('signupError', 'Passwords do not match', 'error');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showMessage('signupError', 'Password must be at least 6 characters', 'error');
-                return;
-            }
-            
-            setLoading('signupForm', true);
-            
-            try {
-                const result = await signUpWithEmail(email, password);
-                if (result.success) {
-                    showMessage('signupSuccess', result.message, 'success');
-                    document.getElementById('signupForm').reset();
+
+            console.log('All auth functions loaded successfully');
+
+            function switchTab(tab) {
+                // Update tab buttons
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                // Update forms
+                document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+                if (tab === 'signin') {
+                    document.getElementById('signinForm').classList.add('active');
                 } else {
-                    showMessage('signupError', result.message, 'error');
+                    document.getElementById('signupForm').classList.add('active');
                 }
-            } catch (error) {
-                showMessage('signupError', 'An error occurred. Please try again.', 'error');
-            } finally {
-                setLoading('signupForm', false);
+                
+                // Clear any error messages
+                clearMessages();
             }
-        });
 
-        function showForgotPassword() {
-            const email = prompt('Enter your email address to reset your password:');
-            if (email) {
-                resetPassword(email).then(result => {
-                    if (result.success) {
-                        alert(result.message);
-                    } else {
-                        alert('Error: ' + result.message);
-                    }
+            function togglePassword(inputId) {
+                const input = document.getElementById(inputId);
+                const btn = input.nextElementSibling;
+                const icon = btn.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+
+            function showMessage(elementId, message, type) {
+                const element = document.getElementById(elementId);
+                element.textContent = message;
+                element.className = type === 'error' ? 'error-message' : 'success-message';
+                element.style.display = 'block';
+            }
+
+            function clearMessages() {
+                document.querySelectorAll('.error-message, .success-message').forEach(msg => {
+                    msg.style.display = 'none';
                 });
             }
-        }
 
-        // Add error message containers
-        document.getElementById('signinForm').insertAdjacentHTML('beforeend', '<div id="signinError" class="error-message" style="display: none;"></div>');
-        document.getElementById('signupForm').insertAdjacentHTML('beforeend', '<div id="signupError" class="error-message" style="display: none;"></div>');
-        document.getElementById('signupForm').insertAdjacentHTML('beforeend', '<div id="signupSuccess" class="success-message" style="display: none;"></div>');
+            function setLoading(formId, loading) {
+                const form = document.getElementById(formId);
+                if (loading) {
+                    form.classList.add('loading');
+                } else {
+                    form.classList.remove('loading');
+                }
+            }
+
+            // Sign In Form Handler
+            document.getElementById('signinForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                clearMessages();
+                
+                const email = document.getElementById('signinEmail').value;
+                const password = document.getElementById('signinPassword').value;
+                
+                if (!email || !password) {
+                    showMessage('signinError', 'Please fill in all fields', 'error');
+                    return;
+                }
+                
+                setLoading('signinForm', true);
+                
+                try {
+                    const result = await signInWithEmail(email, password);
+                    if (!result || !result.success) {
+                        const errorMessage = result ? result.message : 'Sign in failed';
+                        console.error('Sign in error:', errorMessage);
+                        showMessage('signinError', errorMessage, 'error');
+                    }
+                } catch (error) {
+                    console.error('Sign in error:', error);
+                    showMessage('signinError', 'An error occurred. Please try again.', 'error');
+                } finally {
+                    setLoading('signinForm', false);
+                }
+            });
+
+            // Sign Up Form Handler
+            document.getElementById('signupForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                clearMessages();
+                
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (!email || !password || !confirmPassword) {
+                    showMessage('signupError', 'Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showMessage('signupError', 'Passwords do not match', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showMessage('signupError', 'Password must be at least 6 characters', 'error');
+                    return;
+                }
+                
+                setLoading('signupForm', true);
+                
+                try {
+                    const result = await signUpWithEmail(email, password);
+                    if (result.success) {
+                        showMessage('signupSuccess', result.message, 'success');
+                        document.getElementById('signupForm').reset();
+                    } else {
+                        showMessage('signupError', result.message, 'error');
+                    }
+                } catch (error) {
+                    showMessage('signupError', 'An error occurred. Please try again.', 'error');
+                } finally {
+                    setLoading('signupForm', false);
+                }
+            });
+
+            function showForgotPassword() {
+                const email = prompt('Enter your email address to reset your password:');
+                if (email) {
+                    resetPassword(email).then(result => {
+                        if (result.success) {
+                            alert(result.message);
+                        } else {
+                            alert('Error: ' + result.message);
+                        }
+                    });
+                }
+            }
+
+            // Add error message containers
+            document.getElementById('signinForm').insertAdjacentHTML('beforeend', '<div id="signinError" class="error-message" style="display: none;"></div>');
+            document.getElementById('signupForm').insertAdjacentHTML('beforeend', '<div id="signupError" class="error-message" style="display: none;"></div>');
+            document.getElementById('signupForm').insertAdjacentHTML('beforeend', '<div id="signupSuccess" class="success-message" style="display: none;"></div>');
+
+            // Make functions globally available for onclick handlers
+            window.switchTab = switchTab;
+            window.togglePassword = togglePassword;
+            window.showForgotPassword = showForgotPassword;
+        });
     </script>
 </body>
 </html> 
