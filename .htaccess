@@ -7,16 +7,7 @@ RewriteRule ^(.*)$ https://noringsattachedlife.com/$1 [L,R=301]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://noringsattachedlife.com/$1 [L,R=301]
 
-# Remove .html extension from URLs
-RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
-RewriteRule ^ /%1? [NC,L,R=301]
-
-# Internally rewrite .html extension
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([^.]+)$ $1.html [NC,L]
-
-# Redirect index.html to root
+# Redirect index.html to root (only for homepage)
 RewriteRule ^index\.html$ / [R=301,L]
 
 # Redirect trailing slashes
