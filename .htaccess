@@ -7,8 +7,6 @@ RewriteRule ^(.*)$ https://noringsattachedlife.com/$1 [L,R=301]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://noringsattachedlife.com/$1 [L,R=301]
 
-# Redirect index.html to root (only for homepage)
-RewriteRule ^index\.html$ / [R=301,L]
 
 # Security headers
 <IfModule mod_headers.c>
