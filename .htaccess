@@ -10,8 +10,10 @@ RewriteRule ^(.*)$ https://noringsattachedlife.com/$1 [L,R=301]
 # Redirect index.html to root (only for homepage)
 RewriteRule ^index\.html$ / [R=301,L]
 
-# Redirect trailing slashes
+# Redirect trailing slashes (but not for .html files)
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !\.html$
 RewriteRule ^(.*)/$ /$1 [L,R=301]
 
 # Security headers
