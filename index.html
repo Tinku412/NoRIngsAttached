@@ -461,10 +461,145 @@
             box-shadow: 0 0 0 3px rgba(228, 185, 2, 0.1);
         }
 
+        /* Reddit Reviews Section */
+        .reddit-reviews {
+            padding: 100px 0;
+            background-color: var(--white);
+            position: relative;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: var(--light);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e4b902"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .968-.786 1.754-1.754 1.754a1.754 1.754 0 0 1-1.754-1.754l-.018-.062H6.362c-.087.593-.708 1.754-1.754 1.754-.968 0-1.754-.786-1.754-1.754 0-.968.786-1.754 1.754-1.754.677 0 1.265.421 1.502 1.014h8.800l.853-4.011z"/></svg>') no-repeat;
+            background-size: 30px;
+            opacity: 0.1;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .reddit-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .subreddit {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .review-votes {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--secondary);
+            font-weight: 600;
+            background: rgba(228, 185, 2, 0.1);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .review-votes i {
+            color: var(--primary);
+        }
+
+        .review-content {
+            margin-bottom: 15px;
+        }
+
+        .review-content p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--dark);
+            margin: 0;
+            font-style: italic;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .review-time {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .review-awards {
+            font-size: 12px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
         /* Enhanced How It Works Section */
         .how-it-works {
             padding: 100px 0;
-            background-color: var(--white);
+            background-color: var(--light);
             position: relative;
         }
 
@@ -638,6 +773,11 @@
             .steps {
                 grid-template-columns: repeat(3, 1fr);
             }
+            
+            .reviews-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -674,6 +814,21 @@
             
             .faq-item {
                 padding: 20px;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .review-card {
+                padding: 20px;
+            }
+            
+            .review-footer {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
             }
             
             .container {
@@ -856,6 +1011,124 @@
         </div>
     </section>
 
+    <!-- Reddit Reviews Section -->
+    <section class="reddit-reviews">
+        <div class="container">
+            <div class="section-title">
+                <h2>Real feedback from the community</h2>
+                
+            </div>
+           
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reddit-user">
+                            <div class="user-avatar">CF</div>
+                            <div class="user-info">
+                                <span class="username">u/kee_17</span>
+                                <span class="subreddit">r/ChildfreeIndia</span>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="review-content">
+                        <p>"Such a good initiative! Congratulations 🎉"</p>
+                    </div>
+                    
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reddit-user">
+                            <div class="user-avatar">DI</div>
+                            <div class="user-info">
+                                <span class="username">u/Bellanu</span>
+                                <span class="subreddit">r/ChildfreeIndia</span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="review-content">
+                        <p>"This is great! Kudos for the effort"</p>
+                    </div>                    
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reddit-user">
+                            <div class="user-avatar">FR</div>
+                            <div class="user-info">
+                                <span class="username">u/Winter_Specific1295</span>
+                                <span class="subreddit">r/ChildfreeIndia</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="review-content">
+                        <p>"Love this site"</p>
+                    </div>
+                    
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reddit-user">
+                            <div class="user-avatar">TC</div>
+                            <div class="user-info">
+                                <span class="username">u/SuccessfulBid7832</span>
+                                <span class="subreddit">r/ChildfreeIndia</span>
+                            </div>
+                        </div>
+                           
+                    </div>
+                    <div class="review-content">
+                        <p>"Hello! First, a big thank you for creating this website for us—I truly appreciate the effort. I’ve already made a CF4CF post in this sub and would love for it to be added to the site"</p>
+                    </div>
+                   
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reddit-user">
+                            <div class="user-avatar">WF</div>
+                            <div class="user-info">
+                                <span class="username">u/Impossible-Basil-693</span>
+                                <span class="subreddit">r/ChildfreeIndia</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="review-content">
+                        <p>"Hi, I just saw the website u created for the CF people. The website is great and user friendly."</p>
+                    </div>
+                   
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reddit-user">
+                            <div class="user-avatar">BG</div>
+                            <div class="user-info">
+                                <span class="username">u/real_id_se_aya_hu</span>
+                                <span class="subreddit">r/ChildfreeIndia</span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="review-content">
+                        <p>"Thanks for creating https://noringsattachedlife.com/. If you plan to open source it.. please announce in reddit. I am sure multiple people will be willing to contribute. Keep up the great work 🫡"</p>
+                    </div>
+                   
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">...and many more</div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://www.noringsattachedlife.com/login.html" target="_blank" class="btn" style="max-width: 300px; margin: 0 auto;">
+                    <i class="fab fa-reddit"></i> Join The Community
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- How It Works -->
     <section class="how-it-works" id="how-it-works">
         <div class="container">
@@ -870,19 +1143,20 @@
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
+                    <h3>Access Database</h3>
+                    <p>Get access to our curated database of verified profiles, all committed to the childfree lifestyle.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
                     <h3>Create Profile</h3>
                     <p>Create a profile with your lifestyle preferences, career goals, and why you've chosen the childfree lifestyle.</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">3</div>
+                    <div class="step-number">4</div>
                     <h3>Verification</h3>
                     <p>We follow an ongoing verification process continuously evaluating the quality of the profiles.</p>
                 </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Access Database</h3>
-                    <p>Get access to our curated database of verified profiles, all committed to the childfree lifestyle.</p>
-                </div>
+                
                 <div class="step">
                     <div class="step-number">5</div>
                     <h3>Start Matching</h3>
