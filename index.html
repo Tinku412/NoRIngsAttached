@@ -970,9 +970,56 @@
             color: var(--primary);
         }
 
+        /* Scrolling Tagline */
+        .scrolling-tagline {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 8px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            font-weight: 500;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            animation: scroll-right-to-left 45s linear infinite;
+            padding-left: 100%;
+        }
+
+        @keyframes scroll-right-to-left {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .scrolling-tagline:hover .scrolling-text {
+            animation-play-state: paused;
+        }
+
     </style>
 </head>
 <body>
+    <!-- Scrolling Tagline -->
+    <div class="scrolling-tagline">
+        <div class="scrolling-text">
+            🎭 "Parenthood is one kind of fulfillment. Freedom is another. Both deserve respect. We chose the latter." |
+            ✈️ "Being childfree isn't about what you're missing — it's about what you're choosing." |
+            <!-- 💼 "Your time, energy, and peace are sacred. You don’t owe them to expectations." -->
+            <!-- 💸 Breaking News: DINK couple saves ₹50 lakhs by age 30 - discovers secret formula called "No Kids" | 
+            ✈️ Travel Update: Childfree couple visits 15 countries while peers change 15,000 diapers | 
+            🍕 Food Review: Restaurant rated 5 stars for "Actually quiet dining experience without screaming children" | 
+            💼 Career Flash: Woman gets promoted twice in one year, attributes success to "Full night's sleep every night" | 
+            🏠 Real Estate: Childfree couple buys dream home, uses extra bedroom as "Whatever we want room" | 
+            📱 Tech News: New app called "Silence" becomes popular among parents, already installed by default in childfree homes -->
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container">
@@ -1015,7 +1062,7 @@
     <section class="reddit-reviews">
         <div class="container">
             <div class="section-title">
-                <h2>Real feedback from the community</h2>
+                <h2>Response from the community</h2>
                 
             </div>
            
