@@ -363,12 +363,16 @@
     <!-- Add Supabase and Auth scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
+    <script src="subscription-utils-edge.js"></script>
 
     <script>
         // Check authentication and load bookmarks
         document.addEventListener('DOMContentLoaded', async () => {
             const isAuthenticated = await checkAuth()
             if (!isAuthenticated) return
+
+            // Initialize subscription manager
+            window.subscriptionManager = new SubscriptionManager(supabase)
 
             // Add sign out button to header
             const navLinks = document.querySelector('.nav-links')
@@ -387,19 +391,22 @@
                     return
                 }
 
+                // Check subscription status first
+                const subscriptionStatus = await window.subscriptionManager.getUserSubscriptionStatus()
+                const isPremium = subscriptionStatus.is_premium
+
+                // Conditionally select image_url based on subscription status
+                const profileFields = isPremium 
+                    ? 'id, name, age, gender, city, image_url, tagline'
+                    : 'id, name, age, gender, city, tagline'
+
                 const { data: bookmarks, error } = await supabase
                     .from('bookmarks')
                     .select(`
                         id,
                         profile_id,
                         profiles:profile_id (
-                            id,
-                            name,
-                            age,
-                            gender,
-                            city,
-                            image_url,
-                            tagline
+                            ${profileFields}
                         )
                     `)
                     .eq('user_id', user.id)
@@ -421,15 +428,66 @@
                     return
                 }
 
+                // Function to get placeholder image based on gender
+                const getPlaceholderImage = (gender, profileId) => {
+                    const placeholders = {
+                        'male': ['Man1.png', 'Man2.png', 'man3.png'],
+                        'female': ['woman1.png', 'woman2.png', 'woman3.png'],
+                        'other': ['Man1.png', 'woman1.png'],
+                        'LGBTQIA+': ['Man1.png', 'woman1.png']
+                    }
+                    const genderPlaceholders = placeholders[gender?.toLowerCase()] || placeholders['male']
+                    // Use profile ID to consistently select same placeholder for same profile
+                    const index = profileId ? parseInt(profileId.slice(-1), 16) % genderPlaceholders.length : 0
+                    return genderPlaceholders[index]
+                }
+
                 bookmarks.forEach(bookmark => {
                     const profile = bookmark.profiles
+                    
+                    // Use placeholder image for free users, actual image for premium users
+                    const imageUrl = isPremium ? (profile.image_url || getPlaceholderImage(profile.gender, profile.id)) : getPlaceholderImage(profile.gender, profile.id)
+                    
                     const profileCard = `
                         <div class="profile-card">
                             <button class="remove-bookmark" onclick="removeBookmark('${bookmark.id}', event)">
                                 <i class="fas fa-times"></i>
                             </button>
                             <a style="text-decoration: none;" href="profile-details.html?id=${profile.id}">
-                                <img src="${profile.image_url || 'https://via.placeholder.com/300'}" alt="Profile" class="profile-image">
+                                <div style="position: relative;">
+                                    <img src="${imageUrl}" alt="Profile" class="profile-image">
+                                    ${!isPremium ? `
+                                        <div style="
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            right: 0;
+                                            bottom: 0;
+                                            background: rgba(255, 255, 255, 0.9);
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            backdrop-filter: blur(5px);
+                                            border-radius: 8px 8px 0 0;
+                                        ">
+                                            <div style="text-align: center; padding: 20px;">
+                                                <i class="fas fa-crown" style="color: #e4b902; font-size: 24px; margin-bottom: 10px;"></i>
+                                                <p style="color: #333; font-weight: 600; margin: 0; font-size: 14px;">Subscribe to view photos</p>
+                                                <button onclick="event.preventDefault(); event.stopPropagation(); window.location.href='subscription.html'" style="
+                                                    background: #e4b902;
+                                                    color: white;
+                                                    border: none;
+                                                    padding: 6px 12px;
+                                                    border-radius: 4px;
+                                                    margin-top: 8px;
+                                                    cursor: pointer;
+                                                    font-size: 12px;
+                                                    font-weight: 600;
+                                                ">Upgrade</button>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
                                 <div class="profile-info">
                                     <h3 class="profile-name">${profile.name}, ${profile.age}</h3>
                                     <p class="profile-details">${profile.city || 'Location not specified'}</p>

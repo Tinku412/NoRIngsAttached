@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JZ1K38EJKS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JZ1K38EJKS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Updates | No Rings Attached - Childfree</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e4b902;    /* Golden yellow */
+            --secondary: #9a031e;  /* Deep red */
+            --dark: #333F50;
+            --light: #F9F9F9;
+            --gray: #6B7280;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        header {
+            padding: 15px 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 0px 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Blog post styles */
+        .blog-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--light) 0%, #f0f7f7 100%);
+            min-height: 80vh;
+        }
+
+        .blog-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 30px;
+        }
+
+        .blog-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .blog-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tldr-box {
+            background: #f4d03f;
+            color: var(--dark);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            
+            box-shadow: 0 4px 15px rgba(228, 185, 2, 0.2);
+        }
+
+        .tldr-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tldr-box p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            line-height: 1.7;
+        }
+
+        .blog-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--dark);
+        }
+
+        .blog-content h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .blog-content h3 {
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin: 30px 0 15px 0;
+        }
+
+        .blog-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .blog-content ol, .blog-content ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .blog-content li {
+            margin-bottom: 10px;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-table th {
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .pricing-table td {
+            font-weight: 500;
+        }
+
+        .pricing-table tr:nth-child(even) {
+            background: var(--light);
+        }
+
+        .pricing-table .feature {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .checkmark {
+            color: #10B981;
+            font-size: 1.2rem;
+        }
+
+        .cross {
+            color: #EF4444;
+            font-size: 1.2rem;
+        }
+
+        .highlight-box {
+            background: #FEF3C7;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .highlight-box h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .highlight-box p {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .cta-section {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+            border: 2px solid var(--primary);
+        }
+
+        .cta-section h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .cta-section p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(228, 185, 2, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 20px;
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 5px;
+            margin-left: auto;
+            z-index: 1001;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            nav {
+                position: relative;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                border-top: 1px solid var(--border);
+                border-radius: 0 0 12px 12px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .blog-container {
+                padding: 30px 20px;
+                margin: 20px;
+                border-radius: 15px;
+            }
+            
+            .blog-title {
+                font-size: 2rem;
+            }
+            
+            .blog-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .pricing-table {
+                font-size: 0.9rem;
+            }
+            
+            .pricing-table th,
+            .pricing-table td {
+                padding: 10px 8px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a style="text-decoration: none; color: var(--dark);" href="index.html">
+                        <h1>No Rings Attached<span> - Childfree</span></h1>
+                    </a>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="profiles.html">Profiles</a></li>
+                    <li><a href="subscription.html">Subscription</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="blog-container">
+                <div class="blog-header">
+                    <h1 class="blog-title">Important Subscription Updates</h1>
+                    <p class="blog-subtitle">Creating a Safe Community Experience</p>
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> July 20, 2025</span>
+                        <span><i class="fas fa-clock"></i> 3 min read</span>
+                    </div>
+                </div>
+
+                <div class="tldr-box">
+                    <h3><i class="fas fa-bolt"></i> TL;DR - Quick Summary</h3>
+                    <p>There is now a fee to access complete profile details. All existing users continue to have free access till September 1, 2025. New users from today (July 20, 2025), have a basic fee to be able to access complete profile details. Check out pricing details below.</p>
+                </div>
+
+                <div class="blog-content">
+                    
+                    <p>When this site was first launched, it was not in my mind to make people pay for it.</p>
+                    
+                    <p>I wanted to keep it free and open to the community. Any costs incurred would be covered by myself, and I was going to keep it that way.</p>
+                    
+                    <p>This was just my way to give back to the community, and also to have something to keep me busy during the weekends. And believe me, as a child-free, single, introvert, nerd – I don't have anything better to do on a weekend!</p>
+
+                    
+                    <p>But, practicality differs from expectations.</p>
+                    
+                    <p>Over the past few days, I have removed multiple fake profiles & uninterested users who are just testing the site.</p>
+
+                    
+                    <p>Based on the feedback and response so far, I've realized that having a free for all access is not good for the below reasons:</p>
+                    
+                    <ol>
+                        <li><strong>Privacy Concerns:</strong> Users want to remain separated from the outside world due to stigma around being child-free.</li>
+                        <li><strong>Safety Issues:</strong> Few users have been hesitant to upload their profile pictures or add more personal details to their profiles due to lack of a safe space.</li>
+                        <li><strong>Non-serious Users:</strong> There were few non-serious users just scrolling for fun.</li>
+                        <li><strong>Resource Waste:</strong> Limited resources getting wasted from fake profiles and spam users.</li>
+                    </ol>
+
+                    
+                    <p>To maintain the quality of profiles with only high intentional users, below are the fee details that will be implemented:</p>
+
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th class="feature">Features</th>
+                                <th>Free</th>
+                                <th>₹499 for 3 months</th>
+                                <th>₹749 for 6 months</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature">Create Profile</td>
+                                <td><span class="checkmark">✓</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                            </tr>
+                            <tr>
+                                <td class="feature">View Basic Profile Details</td>
+                                <td><span class="checkmark">✓</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="feature">Access Social Links</td>
+                                <td><span class="cross">✗</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                            </tr>
+                            <tr>
+                                <td class="feature">View Profile Photos</td>
+                                <td><span class="cross">✗</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                                <td><span class="checkmark">✓</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="highlight-box">
+                        <h3><i class="fas fa-users"></i> What does this mean for you?</h3>
+                        <p><strong>Existing Users:</strong> If you are an existing user, you will have no impact & will continue to have all access till September 1, 2025. Post September 1, the fee will be applicable to you, depending on the feedback and reassessment.</p>
+                        <p><strong>New Users:</strong> Currently, the fee will be applicable only for new users who sign up from today, that is July 20, 2025.</p>
+                    </div>
+
+                    <h2><i class="fas fa-comments"></i> We Value Your Feedback</h2>
+                    <p>Is the fee too high or low? Need to make changes? Need more clarity or have questions? Please feel free to let me know what you think.</p>
+                    
+                    <p>I am reading all the messages/emails/responses, thanks for all the support so far.</p>
+
+                    <div class="cta-section">
+                        <h3><i class="fas fa-rocket"></i> Ready to Get Started?</h3>
+                        <p>Join our premium community and connect with verified childfree individuals in a safe, secure environment.</p>
+                        <a href="subscription.html" class="btn">View Pricing Plans</a>
+                        <a href="contact.html" class="btn btn-secondary">Contact Us</a>
+                    </div>
+                    <p>Thanks, <br> Sharath
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NRA-Childfree. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navLinks.classList.toggle('active');
+                // Toggle between hamburger and close icon
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon.classList.contains('fa-bars')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('nav')) {
+                    navLinks.classList.remove('active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

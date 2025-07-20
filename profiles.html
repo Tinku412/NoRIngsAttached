@@ -408,6 +408,7 @@
             font-weight: 600;
             text-transform: capitalize;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 5;
         }
 
         .gender-tag {
@@ -499,10 +500,60 @@
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 z-index: 1000;
                 border-top: 1px solid var(--border);
+                border-radius: 0 0 12px 12px;
             }
 
             .nav-links.active {
                 display: flex;
+            }
+
+            /* Mobile dropdown styles */
+            .dropdown {
+                width: 100%;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                background-color: var(--light);
+                border-radius: 8px;
+                margin-top: 10px;
+                width: 100%;
+                min-width: auto;
+                z-index: 1001;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+                animation: slideDown 0.3s ease-out;
+            }
+
+            .dropbtn {
+                width: 100%;
+                justify-content: space-between;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .dropdown-content a {
+                padding: 10px 16px;
+                font-size: 0.95rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .dropdown-content a:last-child {
+                border-bottom: none;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         }
 
@@ -539,7 +590,7 @@
         .dropdown-content a:hover {
             background-color: var(--light);
         }
-        .dropdown:hover .dropdown-content {
+        .dropdown.active .dropdown-content {
             display: block;
         }
     </style>
@@ -560,12 +611,14 @@
                     <!-- <li><a href="index.html#how-it-works">How It Works</a></li>
                     <li><a href="index.html#faq">FAQ</a></li> -->
                     <li><a href="bookmarks.html">Bookmarks</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="subscription.html">Subscription</a></li>
+                    
                     <li class="dropdown" id="myAccountDropdown">
                         <a href="#" class="dropbtn">My Account <i class="fas fa-caret-down"></i></a>
                         <div class="dropdown-content">
                             <a href="#" id="viewMyProfileBtn">View My Profile</a>
                             <a href="#" id="editMyProfileBtn">Edit My Profile</a>
+                            
                         </div>
                     </li>
                 </ul>
@@ -578,7 +631,10 @@
         <div class="container">
             <div class="section-header">
                 <h1>Find Your Perfect Match</h1>
-                <p>Browse through our community of like-minded individuals who share your vision of a DINK lifestyle</p>
+                <p>Browse through our community of like-minded individuals who share your vision of a Childfree lifestyle</p>
+                <br>
+                <p style="font-size: 0.9rem; color: var(--gray);">To provide a safe space for users and to keep things secure and cover costs, we’ve added a small fee. <a href="subscription-updates.html" style="color: var(--primary); text-decoration: underline;">Read this for more details!</a></p>
+                
             </div>
 
             <div id="profileButtons">
@@ -638,6 +694,8 @@
     <!-- Add this before your script -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
+ 
+    <script src="subscription-utils-edge.js"></script>
 
     <script>
         // Function to get unique cities
@@ -704,9 +762,18 @@
                 const genderFilter = document.getElementById('genderFilter').value
                 const locationFilter = document.getElementById('locationFilter').value
 
+                // Check user's subscription status first
+                const subscriptionStatus = await window.subscriptionManager.getUserSubscriptionStatus()
+                const isPremium = subscriptionStatus.is_premium
+
+                // Conditionally select image_url based on subscription status
+                const selectFields = isPremium 
+                    ? 'id, name, age, city, image_url, tagline, gender'
+                    : 'id, name, age, city, tagline, gender'
+
                 let query = supabase
                     .from('profiles')
-                    .select('id, name, age, city, image_url, tagline, gender')
+                    .select(selectFields)
                     .order('created_at', { ascending: false })
 
                 // Apply age filter
@@ -750,19 +817,70 @@
                 }
 
                 filteredProfiles.forEach(profile => {
-                    const profileCard = `
-                        <a href="profile-details.html?id=${profile.id}" class="profile-card">
-                            <div class="gender-tag">${profile.gender || 'Not specified'}, ${profile.age || 'Age N/A'}</div>
-                            
-                            <img src="${profile.image_url || 'Man1.png'}" alt="Profile" class="profile-image">
-                            <div class="profile-info">
-                                <h3 class="profile-name">${profile.name}</h3>
-                                <p class="profile-details">${profile.city || 'Location not specified'}</p>
-                                <p class="profile-tagline">${profile.tagline || 'No description available'}</p>
-                            </div>
-                        </a>
+                    const profileCard = document.createElement('a')
+                    profileCard.href = `profile-details.html?id=${profile.id}`
+                    profileCard.className = 'profile-card'
+                    
+                    // Function to get placeholder image based on gender
+                    const getPlaceholderImage = (gender) => {
+                        const placeholders = {
+                            'male': ['Man1.png', 'Man2.png', 'man3.png'],
+                            'female': ['woman1.png', 'woman2.png', 'woman3.png'],
+                            'other': ['Man1.png', 'woman1.png'],
+                            'LGBTQIA+': ['Man1.png', 'woman1.png']
+                        }
+                        const genderPlaceholders = placeholders[gender?.toLowerCase()] || placeholders['male']
+                        // Use profile ID to consistently select same placeholder for same profile
+                        const index = profile.id ? parseInt(profile.id.slice(-1), 16) % genderPlaceholders.length : 0
+                        return genderPlaceholders[index]
+                    }
+                    
+                    // Use placeholder image for free users, actual image for premium users
+                    const imageUrl = isPremium ? (profile.image_url || getPlaceholderImage(profile.gender)) : getPlaceholderImage(profile.gender)
+                    
+                    profileCard.innerHTML = `
+                        <div class="gender-tag">${profile.gender || 'Not specified'}, ${profile.age || 'Age N/A'}</div>
+                        <div class="profile-image-container" style="position: relative;">
+                            <img src="${imageUrl}" alt="Profile" class="profile-image" id="img-${profile.id}">
+                            ${!isPremium ? `
+                                <div class="subscription-overlay" style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    background: rgba(255, 255, 255, 0.9);
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    backdrop-filter: blur(5px);
+                                    border-radius: 8px;
+                                ">
+                                    <div style="text-align: center; padding: 20px;">
+                                        <i class="fas fa-crown" style="color: #e4b902; font-size: 24px; margin-bottom: 10px;"></i>
+                                        <p style="color: #333; font-weight: 600; margin: 0; font-size: 14px;">Subscribe to view photos</p>
+                                        <button onclick="event.preventDefault(); window.location.href='subscription.html'" style="
+                                            background: #e4b902;
+                                            color: white;
+                                            border: none;
+                                            padding: 6px 12px;
+                                            border-radius: 4px;
+                                            margin-top: 8px;
+                                            cursor: pointer;
+                                            font-size: 12px;
+                                            font-weight: 600;
+                                        ">Upgrade</button>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="profile-info">
+                            <h3 class="profile-name">${profile.name}</h3>
+                            <p class="profile-details">${profile.city || 'Location not specified'}</p>
+                            <p class="profile-tagline">${profile.tagline || 'No description available'}</p>
+                        </div>
                     `
-                    profilesGrid.innerHTML += profileCard
+                    profilesGrid.appendChild(profileCard)
                 })
 
             } catch (error) {
@@ -781,6 +899,9 @@
             // Check authentication
             const isAuthenticated = await checkAuth()
             if (!isAuthenticated) return
+
+            // Initialize subscription manager
+            window.subscriptionManager = new SubscriptionManager(supabase)
 
             // Add sign out button to header
             const navLinks = document.querySelector('.nav-links')
@@ -801,7 +922,8 @@
             // Add mobile menu functionality
             const mobileMenuBtn = document.getElementById('mobileMenuBtn')
 
-            mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navLinks.classList.toggle('active')
                 // Toggle between hamburger and close icon
                 const icon = mobileMenuBtn.querySelector('i')
@@ -814,29 +936,49 @@
                 }
             })
 
-            // Close mobile menu when clicking outside
+            // Close mobile menu when clicking outside (but not dropdown content)
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('nav')) {
+                if (!e.target.closest('nav') && !e.target.closest('.dropdown-content')) {
                     navLinks.classList.remove('active')
+                    dropdown.classList.remove('active')
                     const icon = mobileMenuBtn.querySelector('i')
                     icon.classList.remove('fa-times')
                     icon.classList.add('fa-bars')
                 }
             })
 
-            // Close mobile menu when clicking a link
-            navLinks.querySelectorAll('a').forEach(link => {
+            // Close mobile menu when clicking non-dropdown links
+            navLinks.querySelectorAll('a:not(.dropbtn):not([href="#"])').forEach(link => {
                 link.addEventListener('click', () => {
                     navLinks.classList.remove('active')
+                    dropdown.classList.remove('active')
                     const icon = mobileMenuBtn.querySelector('i')
                     icon.classList.remove('fa-times')
                     icon.classList.add('fa-bars')
                 })
             })
 
+            // Add dropdown click functionality
+            const dropdown = document.getElementById('myAccountDropdown');
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            
+            dropbtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
+
+            // Close dropdown when clicking outside (updated to work with mobile)
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target) && !e.target.closest('.mobile-menu-btn')) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
             // Add event listeners for My Account dropdown
             document.getElementById('viewMyProfileBtn').addEventListener('click', async (e) => {
                 e.preventDefault();
+                dropdown.classList.remove('active'); // Close dropdown after click
                 const { data: { user } } = await supabase.auth.getUser();
                 if (!user) return;
                 // Fetch the user's profile
@@ -854,6 +996,7 @@
 
             document.getElementById('editMyProfileBtn').addEventListener('click', async (e) => {
                 e.preventDefault();
+                dropdown.classList.remove('active'); // Close dropdown after click
                 const { data: { user } } = await supabase.auth.getUser();
                 if (!user) return;
                 // Fetch the user's profile

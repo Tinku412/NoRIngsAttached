@@ -439,6 +439,22 @@
             color: var(--white);
         }
 
+        /* Blurred social links for free users */
+        .social-links span.social-link {
+            display: inline-block;
+            margin: 5px 8px;
+            padding: 8px 16px;
+            background-color: var(--light);
+            color: var(--dark);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            pointer-events: none;
+            user-select: none;
+            cursor: default;
+        }
+
         .popup-message {
             position: fixed;
             top: 50%;
@@ -669,6 +685,7 @@
                         <div class="dropdown-content">
                             <a href="#" id="viewMyProfileBtn">View My Profile</a>
                             <a href="#" id="editMyProfileBtn">Edit My Profile</a>
+                            <a href="subscription.html">Subscription</a>
                         </div>
                     </li>
                 </ul>
@@ -783,10 +800,10 @@
                         <p id="preferencesContent"></p>
                     </div>
 
-                        <div class="profile-section">
+                        <!-- <div class="profile-section">
                             <h3>Contact Information</h3>
                             <p id="contactInfo"></p>
-                        </div>
+                        </div> -->
 
                     <div class="profile-section">
                         <h3>Connect with me here</h3>
@@ -819,12 +836,17 @@
     <!-- Add this line BEFORE your custom script -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
+    <!-- <script src="subscription-utils.js"></script> -->
+    <script src="subscription-utils-edge.js"></script>
 
     <script>
         // Check authentication on page load
         document.addEventListener('DOMContentLoaded', async () => {
             const isAuthenticated = await checkAuth()
             if (!isAuthenticated) return
+
+            // Initialize subscription manager
+            window.subscriptionManager = new SubscriptionManager(supabase)
 
             // Add sign out button to header
             const navLinks = document.querySelector('.nav-links')
@@ -852,25 +874,119 @@
                     return
                 }
 
-                const { data: profile, error } = await supabase
+                // Check subscription status first
+                const subscriptionStatus = await window.subscriptionManager.getUserSubscriptionStatus()
+                const isPremium = subscriptionStatus.is_premium
+
+                // Get current user to check if viewing own profile
+                const { data: { user } } = await supabase.auth.getUser()
+
+                // First, fetch basic fields to determine ownership
+                const basicFields = 'id, name, age, gender, looking_for, city, tagline, about, preferences, social_links, created_at, user_id'
+                
+                const { data: basicProfile, error: basicError } = await supabase
                     .from('profiles')
-                    .select('id, name, age, gender, looking_for, city, image_url, tagline, about, preferences, social_links, created_at, user_id')
+                    .select(basicFields)
                     .eq('id', profileId)
                     .single()
 
-                if (error || !profile) {
+                if (basicError || !basicProfile) {
                     document.getElementById('profileName').textContent = "Profile Not Found"
                     document.getElementById('profileTagline').textContent = ""
                     document.getElementById('basicInfo').textContent = ""
                     document.getElementById('aboutContent').textContent = ""
                     document.getElementById('preferencesContent').textContent = ""
-                    document.getElementById('contactInfo').textContent = ""
+                    // document.getElementById('contactInfo').textContent = ""
                     document.getElementById('socialLinks').innerHTML = ""
                     return
                 }
 
-                // Set main image
-                document.getElementById('profileImage').src = profile.image_url || 'https://via.placeholder.com/400'
+                // Check if viewing own profile
+                const isOwnProfile = user && user.id === basicProfile.user_id
+
+                // Determine if user should see premium content (own profile OR premium subscription)
+                const canViewPremiumContent = isOwnProfile || isPremium
+
+                // Now fetch premium fields only if needed
+                let profile = basicProfile
+                if (canViewPremiumContent) {
+                    const premiumFields = 'id, name, age, gender, looking_for, city, image_url, tagline, about, preferences, social_links, created_at, user_id, email, phone'
+                    const { data: fullProfile, error: fullError } = await supabase
+                        .from('profiles')
+                        .select(premiumFields)
+                        .eq('id', profileId)
+                        .single()
+                    
+                    if (!fullError && fullProfile) {
+                        profile = fullProfile
+                    }
+                } else {
+                    // For non-premium users, only fetch image_url if needed (but we don't need it since we use placeholders)
+                    // profile already has all the basic fields we need
+                }
+
+                // Function to get placeholder image based on gender
+                const getPlaceholderImage = (gender) => {
+                    const placeholders = {
+                        'male': ['Man1.png', 'Man2.png', 'man3.png'],
+                        'female': ['woman1.png', 'woman2.png', 'woman3.png'],
+                        'other': ['Man1.png', 'woman1.png'],
+                        'LGBTQIA+': ['Man1.png', 'woman1.png']
+                    }
+                    const genderPlaceholders = placeholders[gender?.toLowerCase()] || placeholders['male']
+                    // Use profile ID to consistently select same placeholder for same profile
+                    const index = profile.id ? parseInt(profile.id.slice(-1), 16) % genderPlaceholders.length : 0
+                    return genderPlaceholders[index]
+                }
+
+                // Set main image with subscription check
+                const profileImageElement = document.getElementById('profileImage')
+                // Use actual image for own profile or premium users, placeholder for others
+                const imageUrl = canViewPremiumContent ? (profile.image_url || getPlaceholderImage(profile.gender)) : getPlaceholderImage(profile.gender)
+                profileImageElement.src = imageUrl
+                
+                if (!canViewPremiumContent) {
+                    // Blur the image for free users
+                    profileImageElement.style.filter = 'blur(10px)'
+                    
+                    // Add subscription overlay to image container
+                    const imageContainer = profileImageElement.parentElement
+                    imageContainer.style.position = 'relative'
+                    
+                    const overlay = document.createElement('div')
+                    overlay.innerHTML = `
+                        <div style="
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background: rgba(255, 255, 255, 0.9);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 12px;
+                            backdrop-filter: blur(5px);
+                        ">
+                            <div style="text-align: center; padding: 30px;">
+                                <i class="fas fa-crown" style="color: #e4b902; font-size: 48px; margin-bottom: 15px;"></i>
+                                <h3 style="color: #333; margin-bottom: 10px;">Premium Feature</h3>
+                                <p style="color: #666; margin-bottom: 20px;">Subscribe to view profile photos</p>
+                                <button onclick="window.location.href='subscription.html'" style="
+                                    background: #e4b902;
+                                    color: white;
+                                    border: none;
+                                    padding: 12px 24px;
+                                    border-radius: 8px;
+                                    cursor: pointer;
+                                    font-weight: 600;
+                                    font-size: 16px;
+                                ">Upgrade Now</button>
+                            </div>
+                        </div>
+                    `
+                    imageContainer.appendChild(overlay)
+                }
 
                 // Set name and tagline
                 document.getElementById('profileName').textContent = `${profile.name}${profile.age ? '' + '' : ''}`
@@ -911,18 +1027,111 @@
                     document.getElementById('preferencesContent').textContent = preferencesContent
                 }
 
-                // Contact Info
-                let contactInfo = ''
-                //if (profile.email) contactInfo += `<strong>Email:</strong> <a href="mailto:${profile.email}">${profile.email}</a><br>`
-                document.getElementById('contactInfo').innerHTML = contactInfo || '—'
+                // Contact Info with subscription check
+                // let contactInfo = ''
+                // if (!canViewPremiumContent) {
+                //     contactInfo = `
+                //         <div style="
+                //             filter: blur(5px);
+                //             background: rgba(255, 255, 255, 0.8);
+                //             padding: 20px;
+                //             border-radius: 8px;
+                //             position: relative;
+                //             text-align: center;
+                //         ">
+                //             <p>Email: ••••••@••••••.com</p>
+                //             <p>Phone: +91 ••••••••••</p>
+                //         </div>
+                //         <div style="
+                //             text-align: center;
+                //             margin-top: 15px;
+                //             padding: 15px;
+                //             background: #fff3cd;
+                //             border-radius: 8px;
+                //             border: 1px solid #e4b902;
+                //         ">
+                //             <i class="fas fa-crown" style="color: #e4b902; margin-right: 8px;"></i>
+                //             <span style="color: #333; font-weight: 600;">Subscribe to view contact details</span>
+                //             <button onclick="window.location.href='subscription.html'" style="
+                //                 background: #e4b902;
+                //                 color: white;
+                //                 border: none;
+                //                 padding: 6px 12px;
+                //                 border-radius: 4px;
+                //                 margin-left: 10px;
+                //                 cursor: pointer;
+                //                 font-size: 12px;
+                //                 font-weight: 600;
+                //             ">Upgrade</button>
+                //         </div>
+                //     `
+                // } else {
+                //     // Show actual contact info for own profile or premium users
+                //     if (profile.email) contactInfo += `<strong>Email:</strong> <a href="mailto:${profile.email}">${profile.email}</a><br>`
+                //     if (profile.phone) contactInfo += `<strong>Phone:</strong> ${profile.phone}<br>`
+                // }
+                // document.getElementById('contactInfo').innerHTML = contactInfo || '—'
 
-                // Social Links
+                // Social Links with subscription check
                 let socialLinksHtml = ''
-                if (profile.social_links) {
-                    if (profile.social_links.linkedin) socialLinksHtml += `<a class="social-link" href="${profile.social_links.linkedin}" target="_blank">LinkedIn</a>`
-                    if (profile.social_links.instagram) socialLinksHtml += `<a class="social-link" href="${profile.social_links.instagram}" target="_blank">Instagram</a>`
-                    if (profile.social_links.reddit) socialLinksHtml += `<a class="social-link" href="${profile.social_links.reddit}" target="_blank">Reddit</a>`
-                    if (profile.social_links.twitter) socialLinksHtml += `<a class="social-link" href="${profile.social_links.twitter}" target="_blank">Twitter</a>`
+                if (!canViewPremiumContent) {
+                    // Show blurred social links for free users
+                    const hasAnySocialLinks = profile.social_links && (
+                        profile.social_links.linkedin || 
+                        profile.social_links.instagram || 
+                        profile.social_links.reddit || 
+                        profile.social_links.twitter
+                    );
+                    
+                    if (hasAnySocialLinks) {
+                        socialLinksHtml = `
+                            <div style="
+                                filter: blur(3px);
+                                background: rgba(255, 255, 255, 0.8);
+                                padding: 15px;
+                                border-radius: 8px;
+                                position: relative;
+                                text-align: center;
+                            ">
+                                <span class="social-link">LinkedIn</span>
+                                <span class="social-link">Instagram</span>
+                                <span class="social-link">Reddit</span>
+                                <span class="social-link">Twitter</span>
+                            </div>
+                            <div style="
+                                text-align: center;
+                                margin-top: 10px;
+                                padding: 12px;
+                                background: #fff3cd;
+                                border-radius: 8px;
+                                border: 1px solid #e4b902;
+                            ">
+                                <i class="fas fa-crown" style="color: #e4b902; margin-right: 8px;"></i>
+                                <span style="color: #333; font-weight: 600; font-size: 14px;">Subscribe to view social links</span>
+                                <button onclick="window.location.href='subscription.html'" style="
+                                    background: #e4b902;
+                                    color: white;
+                                    border: none;
+                                    padding: 6px 12px;
+                                    border-radius: 4px;
+                                    margin-left: 10px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                ">Upgrade</button>
+                            </div>
+                        `
+                    } else {
+                        socialLinksHtml = '—'
+                    }
+                } else {
+                    // Show actual social links for premium users
+                    if (profile.social_links) {
+                        if (profile.social_links.linkedin) socialLinksHtml += `<a class="social-link" href="${profile.social_links.linkedin}" target="_blank">LinkedIn</a>`
+                        if (profile.social_links.instagram) socialLinksHtml += `<a class="social-link" href="${profile.social_links.instagram}" target="_blank">Instagram</a>`
+                        if (profile.social_links.reddit) socialLinksHtml += `<a class="social-link" href="${profile.social_links.reddit}" target="_blank">Reddit</a>`
+                        if (profile.social_links.twitter) socialLinksHtml += `<a class="social-link" href="${profile.social_links.twitter}" target="_blank">Twitter</a>`
+                    }
                 }
                 document.getElementById('socialLinks').innerHTML = socialLinksHtml || '—'
 

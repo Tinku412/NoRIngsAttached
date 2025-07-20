@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans | No Rings Attached</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e4b902;    /* Golden yellow */
+            --secondary: #9a031e;  /* Deep red */
+            --dark: #333F50;
+            --light: #F9F9F9;
+            --gray: #6B7280;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        header {
+            padding: 15px 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 0px 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Subscription Section */
+        .subscription-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--light) 0%, #f0f7f7 100%);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Current Subscription Status */
+        .current-subscription {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+
+        .current-subscription h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+
+        .subscription-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .info-item .label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .info-item.premium .value {
+            color: var(--primary);
+        }
+
+        /* Pricing Cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--white);
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .plan-duration {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .plan-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .plan-button.primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .plan-button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .plan-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(228, 185, 2, 0.2);
+        }
+
+        .plan-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Transaction History */
+        .transaction-history {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .transaction-history h3 {
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .transaction-table th,
+        .transaction-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transaction-table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status.completed {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status.pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status.failed {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 20px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .section-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
+            
+            .subscription-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .transaction-table {
+                font-size: 0.9rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Loading states */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Cancel subscription styles */
+        .cancel-subscription {
+            background: #FEE2E2;
+            border: 1px solid #FECACA;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .cancel-subscription h4 {
+            color: #991B1B;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .cancel-subscription p {
+            color: #7F1D1D;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .cancel-btn {
+            background: #DC2626;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background: #B91C1C;
+        }
+
+        .cancel-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Hidden pricing grid */
+        .pricing-grid.hidden {
+            display: none;
+        }
+
+        /* Subscription management section */
+        .subscription-management {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .subscription-management h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a style="text-decoration: none; color: var(--dark);" href="index.html">
+                        <h1>No Rings Attached<span> - Childfree</span></h1>
+                    </a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="profiles.html">Profiles</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Subscription Section -->
+    <section class="subscription-section">
+        <div class="container">
+            <div class="section-header">
+                <h1>Choose Your Plan</h1>
+                <p>Get access to premium features and connect with verified childfree individuals</p>
+            </div>
+
+            <!-- Current Subscription Status -->
+            <div class="current-subscription" id="currentSubscription">
+                <h3>Current Subscription</h3>
+                <div class="subscription-info" id="subscriptionInfo">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Subscription Management (shown only for premium users) -->
+            <div class="subscription-management" id="subscriptionManagement" style="display: none;">
+                <h3>Subscription Management</h3>
+                <div class="cancel-subscription">
+                    <h4>Cancel Subscription</h4>
+                    <p>If you cancel your subscription, you'll continue to have premium access until the end of your current billing period. Your subscription will not auto-renew.</p>
+                    <button class="cancel-btn" id="cancelSubscriptionBtn" onclick="handleCancelSubscription()">
+                        Cancel Subscription
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="pricing-grid" id="pricingGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Transaction History -->
+            <div class="transaction-history">
+                <h3>Transaction History</h3>
+                <div id="transactionHistory">
+                    <p>Loading transaction history...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NRA-Childfree. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Razorpay Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Auth -->
+    <script src="auth.js"></script>
+    <!-- Subscription Utils -->
+    <script src="subscription-utils.js"></script>
+
+    <script>
+        let subscriptionManager;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check authentication
+            const isAuthenticated = await checkAuth();
+            if (!isAuthenticated) return;
+
+            // Initialize subscription manager
+            subscriptionManager = new SubscriptionManager(supabase);
+            
+            // Test if subscription manager is working
+            try {
+                await subscriptionManager.getUserSubscriptionStatus();
+            } catch (error) {
+                console.error('Subscription manager test failed:', error);
+                // If the main subscription manager fails, you might want to use the fallback
+                // subscriptionManager = new SubscriptionManagerFallback(supabase);
+            }
+
+            // Add sign out button to header
+            const navLinks = document.querySelector('.nav-links');
+            const signOutLi = document.createElement('li');
+            signOutLi.innerHTML = '<a href="#" onclick="signOut()">Sign Out</a>';
+            navLinks.appendChild(signOutLi);
+
+            // Load subscription data
+            await loadCurrentSubscription();
+            await loadPricingPlans();
+            await loadTransactionHistory();
+        });
+
+        async function loadCurrentSubscription() {
+            try {
+                const status = await subscriptionManager.getUserSubscriptionStatus();
+                const subscriptionInfo = document.getElementById('subscriptionInfo');
+                const subscriptionManagement = document.getElementById('subscriptionManagement');
+                const pricingGrid = document.getElementById('pricingGrid');
+
+                const endDateFormatted = status.end_date 
+                    ? new Date(status.end_date).toLocaleDateString('en-IN')
+                    : 'No expiry';
+
+                // Show cancellation status if applicable
+                const cancellationStatus = status.cancelled_at ? 
+                    `<div class="info-item">
+                        <div class="label">Cancellation</div>
+                        <div class="value" style="color: #DC2626;">Will not auto-renew</div>
+                    </div>` : '';
+
+                subscriptionInfo.innerHTML = `
+                    <div class="info-item ${status.is_premium ? 'premium' : ''}">
+                        <div class="label">Current Plan</div>
+                        <div class="value">${formatPlanName(status.plan_type)}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Status</div>
+                        <div class="value">${status.status.charAt(0).toUpperCase() + status.status.slice(1)}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Valid Until</div>
+                        <div class="value">${endDateFormatted}</div>
+                    </div>
+                    <div class="info-item ${status.is_premium ? 'premium' : ''}">
+                        <div class="label">Access Level</div>
+                        <div class="value">${status.is_premium ? 'Premium' : 'Free'}</div>
+                    </div>
+                    ${cancellationStatus}
+                `;
+
+                // Show subscription management for premium users
+                if (status.is_premium && status.plan_type !== 'free') {
+                    subscriptionManagement.style.display = 'block';
+                    
+                    // Update cancel button state
+                    const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+                    if (status.cancelled_at) {
+                        cancelBtn.textContent = 'Subscription Already Cancelled';
+                        cancelBtn.disabled = true;
+                    } else {
+                        cancelBtn.textContent = 'Cancel Subscription';
+                        cancelBtn.disabled = false;
+                    }
+
+                    // Hide pricing grid for premium users
+                    pricingGrid.classList.add('hidden');
+                    
+                    // Add a note about why pricing is hidden
+                    const pricingNote = document.createElement('div');
+                    pricingNote.className = 'pricing-note';
+                    pricingNote.style.cssText = `
+                        background: var(--light);
+                        border-radius: 12px;
+                        padding: 20px;
+                        text-align: center;
+                        margin-bottom: 40px;
+                        border: 1px solid var(--border);
+                    `;
+                    pricingNote.innerHTML = `
+                        <h3 style="color: var(--primary); margin-bottom: 10px;">You're Already Premium!</h3>
+                        <p style="color: var(--gray); margin: 0;">You currently have access to all premium features. Manage your subscription above.</p>
+                    `;
+                    pricingGrid.parentNode.insertBefore(pricingNote, pricingGrid);
+                } else {
+                    subscriptionManagement.style.display = 'none';
+                    pricingGrid.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error('Error loading subscription status:', error);
+            }
+        }
+
+        async function loadPricingPlans() {
+            try {
+                const plans = await subscriptionManager.getSubscriptionPlans();
+                const currentStatus = await subscriptionManager.getUserSubscriptionStatus();
+                const pricingGrid = document.getElementById('pricingGrid');
+
+                pricingGrid.innerHTML = '';
+
+                plans.forEach((plan, index) => {
+                    const isCurrentPlan = currentStatus.plan_type === plan.id;
+                    const isPopular = plan.id === '6_months';
+                    const features = subscriptionManager.getPlanFeatures(plan.id);
+
+                    const card = document.createElement('div');
+                    card.className = `pricing-card ${isPopular ? 'popular' : ''}`;
+                    card.innerHTML = `
+                        <div class="plan-name">${plan.name}</div>
+                        <div class="plan-price">${subscriptionManager.formatPrice(plan.price_inr)}</div>
+                        <div class="plan-duration">${plan.duration_months > 0 ? `${plan.duration_months} months` : 'Lifetime'}</div>
+                        <ul class="plan-features">
+                            ${features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                        <button 
+                            class="plan-button ${plan.id === 'free' ? 'secondary' : 'primary'}"
+                            onclick="handlePlanSelection(event, '${plan.id}')"
+                            ${isCurrentPlan ? 'disabled' : ''}
+                        >
+                            ${isCurrentPlan ? 'Current Plan' : (plan.id === 'free' ? 'Current Plan' : 'Subscribe Now')}
+                        </button>
+                    `;
+                    pricingGrid.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading pricing plans:', error);
+            }
+        }
+
+        async function loadTransactionHistory() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                const { data: transactions, error } = await supabase
+                    .from('transactions')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const historyContainer = document.getElementById('transactionHistory');
+
+                if (!transactions || transactions.length === 0) {
+                    historyContainer.innerHTML = '<p>No transactions found.</p>';
+                    return;
+                }
+
+                const table = document.createElement('table');
+                table.className = 'transaction-table';
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Payment ID</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${transactions.map(tx => `
+                            <tr>
+                                <td>${new Date(tx.created_at).toLocaleDateString('en-IN')}</td>
+                                <td>${subscriptionManager.formatPrice(tx.amount)}</td>
+                                <td>${tx.razorpay_payment_id.substring(0, 20)}...</td>
+                                <td><span class="status ${tx.status}">${tx.status}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+
+                historyContainer.innerHTML = '';
+                historyContainer.appendChild(table);
+            } catch (error) {
+                console.error('Error loading transaction history:', error);
+                document.getElementById('transactionHistory').innerHTML = '<p>Error loading transaction history.</p>';
+            }
+        }
+
+        async function handlePlanSelection(event, planId) {
+            if (planId === 'free') {
+                subscriptionManager.showNotification('You are already on the free plan!', 'info');
+                return;
+            }
+
+            // Safety check for event
+            if (!event || !event.target) {
+                console.error('Event or event.target is missing');
+                subscriptionManager.showNotification('Error processing subscription. Please try again.', 'error');
+                return;
+            }
+
+            try {
+                const currentStatus = await subscriptionManager.getUserSubscriptionStatus();
+                
+                if (currentStatus.plan_type === planId) {
+                    subscriptionManager.showNotification('You are already subscribed to this plan!', 'info');
+                    return;
+                }
+
+                // Show loading state
+                const button = event.target;
+                const originalText = button.textContent;
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<span class="loading"></span> Processing...';
+                button.disabled = true;
+
+                // Create Razorpay order
+                await subscriptionManager.createRazorpayOrder(planId);
+
+                // Reset button state after successful order creation
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+
+            } catch (error) {
+                console.error('Error processing subscription:', error);
+                subscriptionManager.showNotification('Error processing subscription. Please try again.', 'error');
+                
+                // Reset button state on error
+                if (event && event.target) {
+                    const button = event.target;
+                    button.innerHTML = button.getAttribute('data-original-html') || 'Subscribe Now';
+                    button.disabled = false;
+                }
+            }
+        }
+
+        function formatPlanName(planType) {
+            const names = {
+                'free': 'Free Plan',
+                '3_months': '3 Months Premium',
+                '6_months': '6 Months Premium',
+                'legacy_premium': 'Legacy Premium (Early User Benefit)'
+            };
+            return names[planType] || planType;
+        }
+
+        async function handleCancelSubscription() {
+            try {
+                // Show confirmation dialog
+                const confirmed = confirm(
+                    'Are you sure you want to cancel your subscription?\n\n' +
+                    'You will continue to have premium access until the end of your current billing period, ' +
+                    'but your subscription will not auto-renew.'
+                );
+
+                if (!confirmed) return;
+
+                const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+                const originalText = cancelBtn.textContent;
+                
+                // Show loading state
+                cancelBtn.innerHTML = '<span class="loading"></span> Cancelling...';
+                cancelBtn.disabled = true;
+
+                // Get current user
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) throw new Error('User not authenticated');
+
+                // Update subscription to mark as cancelled
+                const { error } = await supabase
+                    .from('subscriptions')
+                    .update({ 
+                        cancelled_at: new Date().toISOString(),
+                        status: 'cancelled'
+                    })
+                    .eq('user_id', user.id)
+                    .eq('status', 'active');
+
+                if (error) throw error;
+
+                // Show success message
+                subscriptionManager.showNotification(
+                    'Subscription cancelled successfully. You will continue to have premium access until the end of your billing period.',
+                    'success'
+                );
+
+                // Reload subscription data to reflect changes
+                await loadCurrentSubscription();
+
+            } catch (error) {
+                console.error('Error cancelling subscription:', error);
+                subscriptionManager.showNotification(
+                    'Failed to cancel subscription. Please try again or contact support.',
+                    'error'
+                );
+
+                // Reset button state on error
+                const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+                cancelBtn.textContent = 'Cancel Subscription';
+                cancelBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html> 
