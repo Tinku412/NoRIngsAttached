@@ -216,7 +216,31 @@ class SubscriptionManager {
 
     // Format price for display
     formatPrice(priceInPaise) {
-        return `₹${(priceInPaise / 100).toLocaleString('en-IN')}`;
+        return `&#8377;${(priceInPaise / 100).toLocaleString('en-IN')}`;
+    }
+
+    // Format price for UI display with old price strikethrough and monthly rate
+    formatPriceWithDiscount(planId, priceInPaise) {
+        if (planId === '3_months') {
+            const monthlyRate = Math.round(priceInPaise / 3 / 100);
+            return `
+                <div class="price-display">
+                    <span class="old-price">&#8377;499</span>
+                    <span class="new-price">&#8377;${(priceInPaise / 100).toLocaleString('en-IN')}</span>
+                    <span class="monthly-rate">(&#8377;${monthlyRate}/month)</span>
+                </div>
+            `;
+        } else if (planId === '6_months') {
+            const monthlyRate = Math.round(priceInPaise / 6 / 100);
+            return `
+                <div class="price-display">
+                    <span class="old-price">&#8377;749</span>
+                    <span class="new-price">&#8377;${(priceInPaise / 100).toLocaleString('en-IN')}</span>
+                    <span class="monthly-rate">(&#8377;${monthlyRate}/month)</span>
+                </div>
+            `;
+        }
+        return this.formatPrice(priceInPaise);
     }
 
     // Get plan features for display

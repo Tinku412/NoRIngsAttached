@@ -40,7 +40,7 @@ This guide explains how to set up the subscription system for No Rings Attached 
    SELECT * FROM get_user_subscription_status('your-user-id-here');
    
    -- Test creating a subscription
-   SELECT create_or_update_subscription('your-user-id-here', '3_months', 'test_payment_id', 'test_order_id', 49900);
+   SELECT create_or_update_subscription('your-user-id-here', '3_months', 'test_payment_id', 'test_order_id', 17700);
    ```
 
 ## Step 4: Features Implementation
@@ -93,8 +93,8 @@ This guide explains how to set up the subscription system for No Rings Attached 
 | Plan | Duration | Price | Features |
 |------|----------|-------|----------|
 | Free | Lifetime | ₹0 | Basic profiles (no images/contact) |
-| 3 Months | 3 months | ₹499 | Full access to all features |
-| 6 Months | 6 months | ₹799 | Full access to all features |
+| 3 Months | 3 months | ₹177 | Full access to all features |
+| 6 Months | 6 months | ₹294 | Full access to all features |
 
 ## File Structure
 

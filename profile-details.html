@@ -293,14 +293,14 @@
             position: relative;
         }
 
-        .profile-section li::before {
-            content: "•";
-            color: var(--primary);
-            font-size: 1.5rem;
-            position: absolute;
-            left: 0;
-            top: -2px;
-        }
+                    .profile-section li::before {
+                content: "\2022";
+                color: var(--primary);
+                font-size: 1.5rem;
+                position: absolute;
+                left: 0;
+                top: -2px;
+            }
 
         .action-buttons {
             display: flex;
@@ -1018,11 +1018,11 @@
                 if (profile.age) basicInfo += `<strong>Age:</strong> ${profile.age}<br>`
                 if (profile.looking_for) basicInfo += `<strong>Looking For:</strong> ${profile.looking_for}<br>`
                 if (profile.city) basicInfo += `<strong>Location:</strong> ${profile.city}<br>`
-                document.getElementById('basicInfo').innerHTML = basicInfo || '—'
+                document.getElementById('basicInfo').innerHTML = basicInfo || '&#8212;'
 
                 // About
-                const aboutContent = profile.about || '—'
-                if (aboutContent !== '—') {
+                            const aboutContent = profile.about || '&#8212;'
+            if (aboutContent !== '&#8212;') {
                     // Split the content into paragraphs and format as a list
                     const paragraphs = aboutContent.split('\n').filter(p => p.trim())
                     const formattedAbout = paragraphs.length > 1 
@@ -1034,8 +1034,8 @@
                 }
 
                 // Preferences
-                const preferencesContent = profile.preferences || '—'
-                if (preferencesContent !== '—') {
+                            const preferencesContent = profile.preferences || '&#8212;'
+            if (preferencesContent !== '&#8212;') {
                     // Split the content into paragraphs and format as a list
                     const paragraphs = preferencesContent.split('\n').filter(p => p.trim())
                     const formattedPreferences = paragraphs.length > 1 
@@ -1089,7 +1089,7 @@
                 //     if (profile.email) contactInfo += `<strong>Email:</strong> <a href="mailto:${profile.email}">${profile.email}</a><br>`
                 //     if (profile.phone) contactInfo += `<strong>Phone:</strong> ${profile.phone}<br>`
                 // }
-                // document.getElementById('contactInfo').innerHTML = contactInfo || '—'
+                // document.getElementById('contactInfo').innerHTML = contactInfo || '&#8212;'
 
                 // Social Links with subscription check
                 let socialLinksHtml = ''
@@ -1141,7 +1141,7 @@
                             </div>
                         `
                     } else {
-                        socialLinksHtml = '—'
+                        socialLinksHtml = '&#8212;'
                     }
                 } else {
                     // Show actual social links for premium users
@@ -1152,7 +1152,7 @@
                         if (profile.social_links.twitter) socialLinksHtml += `<a class="social-link" href="${profile.social_links.twitter}" target="_blank">Twitter</a>`
                     }
                 }
-                document.getElementById('socialLinks').innerHTML = socialLinksHtml || '—'
+                document.getElementById('socialLinks').innerHTML = socialLinksHtml || '&#8212;'
 
                 // Add event listeners for top buttons
                 const topBookmarkBtn = document.getElementById('topBookmarkBtn')

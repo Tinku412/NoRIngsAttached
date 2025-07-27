@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS subscription_plans (
 -- Insert default subscription plans
 INSERT INTO subscription_plans (id, name, duration_months, price_inr, features) VALUES
 ('free', 'Free Plan', 0, 0, '{"profile_pictures": false, "contact_details": false, "profile_count": "unlimited"}'),
-('3_months', '3 Months Premium', 3, 49900, '{"profile_pictures": true, "contact_details": true, "profile_count": "unlimited"}'),
-('6_months', '6 Months Premium', 6, 74900, '{"profile_pictures": true, "contact_details": true, "profile_count": "unlimited"}')
+('3_months', '3 Months Premium', 3, 17700, '{"profile_pictures": true, "contact_details": true, "profile_count": "unlimited"}'),
+('6_months', '6 Months Premium', 6, 29400, '{"profile_pictures": true, "contact_details": true, "profile_count": "unlimited"}')
 ON CONFLICT (id) DO UPDATE SET
     price_inr = EXCLUDED.price_inr,
     features = EXCLUDED.features,

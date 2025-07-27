@@ -251,6 +251,32 @@
             margin-bottom: 5px;
         }
 
+        .price-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .old-price {
+            font-size: 1.2rem;
+            color: var(--gray);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .new-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .monthly-rate {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
         .plan-duration {
             color: var(--gray);
             margin-bottom: 30px;
@@ -270,7 +296,7 @@
         }
 
         .plan-features li::before {
-            content: '✓';
+            content: '\2713';
             color: var(--primary);
             font-weight: bold;
             font-size: 1.2rem;
@@ -607,8 +633,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Auth -->
     <script src="auth.js"></script>
-    <!-- Subscription Utils -->
-    <script src="subscription-utils.js"></script>
+            <!-- Subscription Utils -->
+        <script src="subscription-utils.js?v=1.4"></script>
 
     <script>
         let subscriptionManager;
@@ -740,7 +766,7 @@
                     card.className = `pricing-card ${isPopular ? 'popular' : ''}`;
                     card.innerHTML = `
                         <div class="plan-name">${plan.name}</div>
-                        <div class="plan-price">${subscriptionManager.formatPrice(plan.price_inr)}</div>
+                        <div class="plan-price">${subscriptionManager.formatPriceWithDiscount(plan.id, plan.price_inr)}</div>
                         <div class="plan-duration">${plan.duration_months > 0 ? `${plan.duration_months} months` : 'Lifetime'}</div>
                         <ul class="plan-features">
                             ${features.map(feature => `<li>${feature}</li>`).join('')}

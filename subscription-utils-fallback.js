@@ -91,7 +91,7 @@ class SubscriptionManagerFallback {
                         id: '3_months',
                         name: '3 Months Premium',
                         duration_months: 3,
-                        price_inr: 49900,
+                        price_inr: 17700,
                         features: {},
                         is_active: true
                     },
@@ -99,7 +99,7 @@ class SubscriptionManagerFallback {
                         id: '6_months',
                         name: '6 Months Premium',
                         duration_months: 6,
-                        price_inr: 74900,
+                        price_inr: 29400,
                         features: {},
                         is_active: true
                     }
@@ -283,7 +283,31 @@ class SubscriptionManagerFallback {
     }
 
     formatPrice(priceInPaise) {
-        return `₹${(priceInPaise / 100).toLocaleString('en-IN')}`;
+        return `&#8377;${(priceInPaise / 100).toLocaleString('en-IN')}`;
+    }
+
+    // Format price for UI display with old price strikethrough and monthly rate
+    formatPriceWithDiscount(planId, priceInPaise) {
+        if (planId === '3_months') {
+            const monthlyRate = Math.round(priceInPaise / 3 / 100);
+            return `
+                <div class="price-display">
+                    <span class="old-price">&#8377;499</span>
+                    <span class="new-price">&#8377;${(priceInPaise / 100).toLocaleString('en-IN')}</span>
+                    <span class="monthly-rate">(&#8377;${monthlyRate}/month)</span>
+                </div>
+            `;
+        } else if (planId === '6_months') {
+            const monthlyRate = Math.round(priceInPaise / 6 / 100);
+            return `
+                <div class="price-display">
+                    <span class="old-price">&#8377;749</span>
+                    <span class="new-price">&#8377;${(priceInPaise / 100).toLocaleString('en-IN')}</span>
+                    <span class="monthly-rate">(&#8377;${monthlyRate}/month)</span>
+                </div>
+            `;
+        }
+        return this.formatPrice(priceInPaise);
     }
 
     getPlanFeatures(planId) {
