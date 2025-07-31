@@ -5,7 +5,7 @@ class SubscriptionManagerEdge {
     constructor(supabaseClient) {
         this.supabase = supabaseClient;
         // Only need the public key - secret is handled by Edge Functions
-        this.razorpayKeyId = 'rzp_test_azDHuKyUl5Bpui'; // Your public Razorpay key
+        this.razorpayKeyId = 'rzp_live_mU33VGxlJtN6CF'; // Your public Razorpay key
     }
 
     // Check user's current subscription status

@@ -3,7 +3,7 @@
 class SubscriptionManager {
     constructor(supabaseClient) {
         this.supabase = supabaseClient;
-        this.razorpayKeyId = 'rzp_live_XNy50iFwlZctcc'; // Replace with your actual Razorpay key
+        this.razorpayKeyId = 'rzp_live_mU33VGxlJtN6CF'; // Replace with your actual Razorpay key
     }
 
     // Check user's current subscription status

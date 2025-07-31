@@ -4,7 +4,7 @@
 class SubscriptionManagerFallback {
     constructor(supabaseClient) {
         this.supabase = supabaseClient;
-        this.razorpayKeyId = 'rzp_live_XNy50iFwlZctcc'; // Your Razorpay key
+        this.razorpayKeyId = 'rzp_live_mU33VGxlJtN6CF'; // Your Razorpay key
     }
 
     // Fallback method - checks subscription table directly
