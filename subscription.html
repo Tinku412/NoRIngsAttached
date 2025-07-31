@@ -634,7 +634,7 @@
     <!-- Auth -->
     <script src="auth.js"></script>
             <!-- Subscription Utils -->
-        <script src="subscription-utils.js?v=1.4"></script>
+        <script src="subscription-utils-fallback.js"></script>
 
     <script>
         let subscriptionManager;
@@ -644,8 +644,8 @@
             const isAuthenticated = await checkAuth();
             if (!isAuthenticated) return;
 
-            // Initialize subscription manager
-            subscriptionManager = new SubscriptionManager(supabase);
+            // Initialize subscription manager with fallback support
+            subscriptionManager = new SubscriptionManagerFallback(supabase);
             
             // Test if subscription manager is working
             try {
